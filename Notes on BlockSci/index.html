@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"/>
+
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"/>
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+
+
+  <meta name="google-site-verification" content="true"/>
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="vh3BWN1atu" />
+
+
+
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3.0.0/dist/css/jquery.fancybox.min.css"/>
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1"/>
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.0.1">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: true,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//st.flyhigher.top/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '2']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+
+  <meta name="description" content="1 Introduction 3 pain points of existing tools: Poor performance Limited capabilities Cumbersome programming interface   To overcome those drawbacks Compared to general-purpose graph db, BlockSci is h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes on BlockSci">
+<meta property="og:url" content="https://www.virgilsun.com/Notes%20on%20BlockSci/index.html">
+<meta property="og:site_name" content="Sun&#39;s Blog">
+<meta property="og:description" content="1 Introduction 3 pain points of existing tools: Poor performance Limited capabilities Cumbersome programming interface   To overcome those drawbacks Compared to general-purpose graph db, BlockSci is h">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://s2.loli.net/2021/12/09/RkfIsLZeBihj52H.png">
+<meta property="og:image" content="https://s2.loli.net/2021/12/09/B67UL1PgEc2Otjb.png">
+<meta property="og:image" content="https://s2.loli.net/2021/12/10/AIET5bpmaCjzwVW.png">
+<meta property="og:image" content="https://s2.loli.net/2021/12/10/KpZJafdF5ghNkIs.png">
+<meta property="og:image" content="https://s2.loli.net/2021/12/10/6fusewCKcdOrlxT.png">
+<meta property="article:published_time" content="2021-12-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-12-10T14:13:00.028Z">
+<meta property="article:author" content="Virgil Sun">
+<meta property="article:tag" content="OLAP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2021/12/09/RkfIsLZeBihj52H.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sun's Blog" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.virgilsun.com/Notes%20on%20BlockSci/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Notes on BlockSci | Sun's Blog</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db5a55d89cc89dd77ff08de18d30e45f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sun's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">Goose had left marks.</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>Tags<span class="badge">22</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>Categories<span class="badge">3</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>Archives<span class="badge">14</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-13/36">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/sentence" rel="section"><i class="menu-item-icon fa fa-fw fa-align-left"></i> <br/>13/36</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/SwJay" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.virgilsun.com/Notes%20on%20BlockSci/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Virgil Sun"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="https://i.loli.net/2019/04/02/5ca34b140d93c.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sun's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Notes on BlockSci
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2021-12-10 00:00:00 / Modified: 22:13:00" itemprop="dateCreated datePublished" datetime="2021-12-10T00:00:00+08:00">2021-12-10</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Blockchain/" itemprop="url" rel="index"><span itemprop="name">Blockchain</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/Notes%20on%20BlockSci/" class="leancloud_visitors" data-flag-title="Notes on BlockSci">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                
+                  
+                    
+                  
+                
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h2><ul>
+<li>3 pain points of existing tools:<ul>
+<li>Poor performance</li>
+<li>Limited capabilities</li>
+<li>Cumbersome programming interface</li>
+</ul>
+</li>
+<li>To overcome those drawbacks<ul>
+<li>Compared to <em>general-purpose graph db</em>, BlockSci is hundreds of time faster for <em>sequential queries</em>, and substantially faster for all queries, including <em>graph traversal queries</em></li>
+<li>Bundled with analytical modules such as address clustering, exposes different blockchains, collects mempool state, etc.</li>
+<li>Multiple programming interface</li>
+</ul>
+</li>
+<li>design<ul>
+<li>In-memory analytical db</li>
+<li>Tricks to increase speed and decrease data size: convert hash pointers to actual pointers, deduplicate address data</li>
+<li>Scale vertically, memory large enough</li>
+<li>Avoiding distributed processing: since blockchain data is graph structured, thus hard to partition effectively.</li>
+</ul>
+</li>
+<li>Battery included:<ul>
+<li>multi-chain mode</li>
+<li>library of useful analytic tools</li>
+<li>record tx time and expose them through the same interface</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-Design-and-architecture"><a href="#2-Design-and-architecture" class="headerlink" title="2 Design and architecture"></a>2 Design and architecture</h2><ul>
+<li>overview</li>
+</ul>
+<p><img src="https://s2.loli.net/2021/12/09/RkfIsLZeBihj52H.png" alt="image.png"></p>
+<h3 id="2-1-Recording-and-importing-data"><a href="#2-1-Recording-and-importing-data" class="headerlink" title="2.1 Recording and importing data"></a>2.1 Recording and importing data</h3><ul>
+<li>Supported blockchains:<ul>
+<li>Support UTXO based blockchains</li>
+<li>Multi-chain mode: forked chains can be combined in a memory-efficient multichain configuration<ul>
+<li>common data is loaded only once</li>
+<li>address data is deduplicated across forks, enable cross-chain analysis</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Importer<ul>
+<li>Json RPC: small chain</li>
+<li>on-disk raw data: larger chain</li>
+</ul>
+</li>
+<li>Mempool recorder<ul>
+<li>The waiting time of included transactions provides valuable data for economic analyses and isn’t recorded in the blockchain itself.</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-Parser"><a href="#2-2-Parser" class="headerlink" title="2.2 Parser"></a>2.2 Parser</h3><ul>
+<li>Parsing is sequential and stateful<ul>
+<li>2 types of states are required for transformation:<ul>
+<li>link a tx’s input to a prior tx’s output (represented as <tx hash, output index>)</li>
+<li>link input/output to addresses: assign ID to every tx and address, maintain UTXO set and hash ID mapping.</li>
+</ul>
+</li>
+<li>Intra-block tx order<ul>
+<li>BTC: chronological order</li>
+<li>BCH: canonical transaction ordering (CTOR), i.e., based on hash.</li>
+<li>Thus multiple pass for parser to link tx, toleranting arbitrary ordering of tx.</li>
+</ul>
+</li>
+<li>Deletion<ul>
+<li>UTXO can be deleted from the parser state after spending</li>
+<li>Address mapping can’t be discarded, since any address can be used by outputs. <em>Must be tracked all time.</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Optimization (address storage): Bloom filters and address caches</p>
+<ul>
+<li>Two oberservations:<ul>
+<li>Vast majority of inputs spend recently created outputs: $88\%$ inputs spend outpus created in last $4000$ blocks.</li>
+<li>Only $8.6\%$ BTC addresses are used more than once, but account for $51\%$ of all occurrences.</li>
+</ul>
+</li>
+<li>Optimizations:<ul>
+<li>A Bloom filter stores all seen addresses: ensures correctness of existing addresses, while minimizing queries on nonexistent ones.</li>
+<li>A multi-use address cache: contains addresses that have been used multiple times.</li>
+<li>Address hashes are stored in RocksDB to flush in disk.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Shared state across chains</p>
+<ul>
+<li>shares and reuse parser states, such as bloom filter of seen addresses, shared a single db s.t. address data is deduplicated.</li>
+</ul>
+</li>
+<li>Incremental updates<ul>
+<li>Append-only nature of blockchain</li>
+<li>The parser serializes its ﬁnal state at the end of a run, and resumes from that state when invoked again.</li>
+<li>Handle reorganization from forks: ignore the most recent few blocks during initialization.</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-BlockSci-Data"><a href="#2-3-BlockSci-Data" class="headerlink" title="2.3 BlockSci Data"></a>2.3 BlockSci Data</h3><ul>
+<li><p>3 categories of datas</p>
+<ul>
+<li>The core tx graph: always in-memory, stored in row-based format</li>
+<li>Scripts and additional data: hybrid (partially column-based, partially row-based)</li>
+<li>Indices to look up tx or addresses by Hash: on-disk db.</li>
+</ul>
+</li>
+<li><p>Tx graph.</p>
+<ul>
+<li><p>stored in a single sequential table of tx with following entry structure:</p>
+<p><img src="https://s2.loli.net/2021/12/09/B67UL1PgEc2Otjb.png" alt="image.png"></p>
+</li>
+<li><p>variable length record:</p>
+<ul>
+<li>due to variable # inputs/outputs</li>
+<li>normal impementation: heap organization, which is memory consuming and worse locality of reference.</li>
+<li>special append-only property, only 2 kinds of modifications:<ul>
+<li>appending new entries (due to new tx)</li>
+<li>length-preserving edits to existing entries (when existing utxo is consumed).</li>
+</ul>
+</li>
+<li>Final implementation:<ul>
+<li>flat file on disk, grow linearly.</li>
+<li>To load the file for analysis, map into memory.</li>
+<li>The on-disk data can keep growing (and modified in place), while in-memory data provides a static view.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Layout and locality</p>
+<ul>
+<li>Sequential analysis exhibits strong locality, enable sequential I/O instead of random I/O.</li>
+<li>Store both input and output in tx:<ul>
+<li>con: slightly duplication (a space cost of about $19\%$)</li>
+<li>pros: significant speedup for sequential iteration compared to a normalized layout.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Indices</p>
+<ul>
+<li>ID to Hash: tx/addr hash are stored in flat files, with ID as key.</li>
+<li>Hash to ID: stored in separate indices in RocksDB</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-4-BlockSci-Analysis-Library"><a href="#2-4-BlockSci-Analysis-Library" class="headerlink" title="2.4 BlockSci Analysis Library"></a>2.4 BlockSci Analysis Library</h3><ul>
+<li>Snapshot illusion<ul>
+<li>The blockchain on disk increases over time, but the stored height remains ﬁxed, and accesses to blocks past this height are prevented.</li>
+</ul>
+</li>
+<li>Memory mapping and parallelism<ul>
+<li>BlockSci uses the same format for tx graph both in memory and on disk, thus loading only involves mapping.</li>
+<li>Multithread:<ul>
+<li>When a file is mapped into memory by multiple processes, they use the same physical memory.</li>
+<li>Only one writer (the parser), analysis library won’t overwrite.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Mapreduce<ul>
+<li>The analysis library supports mapreduce abstraction, handles parallelizing the task to utilize all available cores.</li>
+</ul>
+</li>
+<li>Address linking.<ul>
+<li>Two common types of heuristics<ol>
+<li>inputs spent in the same transaction are controlled by the same entity</li>
+<li>identifying a change address based on client software or user behavior</li>
+</ol>
+</li>
+<li>These heuristics create links (edges) in a graph of addresses, generate clusters of addresses as output.</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-6-Performance-Evaluation"><a href="#2-6-Performance-Evaluation" class="headerlink" title="2.6 Performance Evaluation"></a>2.6 Performance Evaluation</h3><h4 id="2-6-1-Basic-run-time-statistics"><a href="#2-6-1-Basic-run-time-statistics" class="headerlink" title="2.6.1 Basic run time statistics"></a>2.6.1 Basic run time statistics</h4><ul>
+<li>Query:<ul>
+<li>Mapreduce-style iteration over the blockchain</li>
+<li>Example: ﬁnding transactions with anomalously high fees. Require traversing not onlt tx, but also input and output.</li>
+</ul>
+</li>
+<li>Result<ul>
+<li><img src="https://s2.loli.net/2021/12/10/AIET5bpmaCjzwVW.png" alt="image.png"></li>
+</ul>
+</li>
+</ul>
+<h4 id="2-6-2-Comparison-with-graph-database"><a href="#2-6-2-Comparison-with-graph-database" class="headerlink" title="2.6.2 Comparison with graph database"></a>2.6.2 Comparison with graph database</h4><ul>
+<li><p>Compared graph database:</p>
+<ul>
+<li><p>Neo4j, RedisGraph, Memgraph</p>
+</li>
+<li><p>graph property model: model blocks, transactions, outputs, and addresses as nodes</p>
+<p><img src="https://s2.loli.net/2021/12/10/KpZJafdF5ghNkIs.png" alt="image.png"></p>
+</li>
+</ul>
+</li>
+<li><p>Query</p>
+<ul>
+<li>Iterative queries<ul>
+<li>ﬁnding transactions with a positive locktime</li>
+<li>ﬁnding the highest output value</li>
+<li>ﬁnding the highest transaction fee</li>
+</ul>
+</li>
+<li>Graph traversal<ul>
+<li>calculating the total value received by a popular address</li>
+<li>counting the number of outputs that have been spent in the same block</li>
+<li>identifying transactions where exactly one output has been spent in a transaction that uses a similar locktime policy</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Result</p>
+<ul>
+<li><img src="https://s2.loli.net/2021/12/10/6fusewCKcdOrlxT.png" alt="image.png"></li>
+<li></li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>If it helps, you may buy me a cup of coffee plz.</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Virgil Sun WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Virgil Sun Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Virgil</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="https://www.virgilsun.com/Notes%20on%20BlockSci/" title="Notes on BlockSci">https://www.virgilsun.com/Notes%20on%20BlockSci/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/OLAP/" rel="tag"># OLAP</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+              <div id="needsharebutton-postbottom">
+                <span class="btn">
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </span>
+              </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Notes%20on%20Database%20System%20Concepts%20-%20Ch24%20Advanced%20Indexing/" rel="next" title="Notes on Database System Concepts - Ch24 Advanced Indexing">
+                <i class="fa fa-chevron-left"></i> Notes on Database System Concepts - Ch24 Advanced Indexing
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Notes%20on%20Blockchains%20vs.%20Distributed%20Databases%20Dichotomy%20and%20Fusion/" rel="prev" title="Notes on Blockchains vs. Distributed Databases Dichotomy and Fusion">
+                Notes on Blockchains vs. Distributed Databases Dichotomy and Fusion <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+        <div id="lv-container" data-id="city" data-uid="MTAyMC80MzU0NS8yMDA4NA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://i.loli.net/2019/04/02/5ca34b140d93c.jpg"
+                alt="Virgil Sun"/>
+            
+              <p class="site-author-name" itemprop="name">Virgil Sun</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">categories</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="https://github.com/SwJay" title="GitHub &rarr; https://github.com/SwJay" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span><br/>
+                  
+                    
+                  
+                  <a href="mailto:virgilsun@outlook.com" title="Mail &rarr; mailto:virgilsun@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="https://www.weibo.com/u/1960293815" title="微博 &rarr; https://www.weibo.com/u/1960293815" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="/atom.xml" title="RSS &rarr; /atom.xml"><i class="fa fa-fw fa-fas fa-rss"></i>RSS</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.drg1998.cn/" title="https://blog.drg1998.cn/" rel="noopener" target="_blank">Guo Shuai</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Introduction"><span class="nav-number">1.</span> <span class="nav-text">1 Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Design-and-architecture"><span class="nav-number">2.</span> <span class="nav-text">2 Design and architecture</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-Recording-and-importing-data"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 Recording and importing data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Parser"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 Parser</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-BlockSci-Data"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 BlockSci Data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-BlockSci-Analysis-Library"><span class="nav-number">2.4.</span> <span class="nav-text">2.4 BlockSci Analysis Library</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-6-Performance-Evaluation"><span class="nav-number">2.5.</span> <span class="nav-text">2.6 Performance Evaluation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-1-Basic-run-time-statistics"><span class="nav-number">2.5.1.</span> <span class="nav-text">2.6.1 Basic run time statistics</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-6-2-Comparison-with-graph-database"><span class="nav-number">2.5.2.</span> <span class="nav-text">2.6.2 Comparison with graph database</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Virgil Sun</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      已有
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次到访 w
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="//cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/jquery_lazyload@1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.2.1/velocity.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3.0.0/dist/js/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: 'Notes on BlockSci/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+    
+  
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+  
+  
+    
+  
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+    
+      pbOptions = {};
+      
+        pbOptions.iconStyle = "box";
+      
+        pbOptions.boxForm = "horizontal";
+      
+        pbOptions.position = "bottomCenter";
+      
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</body>
+</html>

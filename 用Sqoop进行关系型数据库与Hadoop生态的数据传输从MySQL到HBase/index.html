@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"/>
+
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"/>
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+
+
+  <meta name="google-site-verification" content="true"/>
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="vh3BWN1atu" />
+
+
+
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3.0.0/dist/css/jquery.fancybox.min.css"/>
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1"/>
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.0.1">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: true,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//st.flyhigher.top/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '2']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+
+  <meta name="description" content="Task: 建立2个节点，每个节点都运行一个mysql实例，并分别将附件里面的imdb和烂番茄的数据导入到mysql中。在建立一个包括5个节点的Hbase，通过sqoop把mysql的内容都导入到Hbase中，成为唯一的一张表。 因为imdb和烂番茄的表定义是不一样的。 IMDB:1&gt;&quot;Id&quot;,&quot;Name&quot;,&quot;YearRange&quot;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Sqoop进行关系型数据库与Hadoop生态的数据传输:从MySQL到HBase">
+<meta property="og:url" content="https://www.virgilsun.com/%E7%94%A8Sqoop%E8%BF%9B%E8%A1%8C%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EHadoop%E7%94%9F%E6%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%BB%8EMySQL%E5%88%B0HBase/index.html">
+<meta property="og:site_name" content="Sun&#39;s Blog">
+<meta property="og:description" content="Task: 建立2个节点，每个节点都运行一个mysql实例，并分别将附件里面的imdb和烂番茄的数据导入到mysql中。在建立一个包括5个节点的Hbase，通过sqoop把mysql的内容都导入到Hbase中，成为唯一的一张表。 因为imdb和烂番茄的表定义是不一样的。 IMDB:1&gt;&quot;Id&quot;,&quot;Name&quot;,&quot;YearRange&quot;">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2019/04/04/5ca59f45b4cd0.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/04/5ca61e347cba3.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/04/5ca60321232f4.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/04/5ca60352e14ad.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/04/5ca604555e218.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/04/5ca60397efda0.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/04/5ca62273530c0.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/04/5ca619099b799.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/04/5ca61eb1b239d.png">
+<meta property="article:published_time" content="2019-04-04T15:40:03.000Z">
+<meta property="article:modified_time" content="2021-11-30T02:30:45.590Z">
+<meta property="article:author" content="Virgil Sun">
+<meta property="article:tag" content="Hadoop">
+<meta property="article:tag" content="Sqoop">
+<meta property="article:tag" content="Hbase">
+<meta property="article:tag" content="Mysql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2019/04/04/5ca59f45b4cd0.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sun's Blog" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.virgilsun.com/%E7%94%A8Sqoop%E8%BF%9B%E8%A1%8C%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EHadoop%E7%94%9F%E6%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%BB%8EMySQL%E5%88%B0HBase/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>用Sqoop进行关系型数据库与Hadoop生态的数据传输:从MySQL到HBase | Sun's Blog</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db5a55d89cc89dd77ff08de18d30e45f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sun's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">Goose had left marks.</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>Tags<span class="badge">22</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>Categories<span class="badge">3</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>Archives<span class="badge">14</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-13/36">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/sentence" rel="section"><i class="menu-item-icon fa fa-fw fa-align-left"></i> <br/>13/36</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/SwJay" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.virgilsun.com/%E7%94%A8Sqoop%E8%BF%9B%E8%A1%8C%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EHadoop%E7%94%9F%E6%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%BB%8EMySQL%E5%88%B0HBase/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Virgil Sun"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="https://i.loli.net/2019/04/02/5ca34b140d93c.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sun's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">用Sqoop进行关系型数据库与Hadoop生态的数据传输:从MySQL到HBase
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-04 23:40:03" itemprop="dateCreated datePublished" datetime="2019-04-04T23:40:03+08:00">2019-04-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-11-30 10:30:45" itemprop="dateModified" datetime="2021-11-30T10:30:45+08:00">2021-11-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Bigdata/" itemprop="url" rel="index"><span itemprop="name">Bigdata</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/%E7%94%A8Sqoop%E8%BF%9B%E8%A1%8C%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EHadoop%E7%94%9F%E6%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%BB%8EMySQL%E5%88%B0HBase/" class="leancloud_visitors" data-flag-title="用Sqoop进行关系型数据库与Hadoop生态的数据传输:从MySQL到HBase">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                
+                  
+                    
+                  
+                
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Task:</p>
+<p>建立2个节点，每个节点都运行一个mysql实例，并分别将附件里面的imdb和烂番茄的数据导入到mysql中。在建立一个包括5个节点的Hbase，通过sqoop把mysql的内容都导入到Hbase中，成为唯一的一张表。</p>
+<p>因为imdb和烂番茄的表定义是不一样的。</p>
+<p>IMDB:<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&quot;Id&quot;,&quot;Name&quot;,&quot;YearRange&quot;,&quot;ReleaseDate&quot;,&quot;Director&quot;,&quot;Creator&quot;,&quot;Cast&quot;,&quot;Duration&quot;,&quot;RatingValue&quot;,&quot;ContentRating&quot;,&quot;Genre&quot;,&quot;Url&quot;,&quot;Description&quot;</span><br></pre></td></tr></table></figure><br>烂番茄<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt;&quot;Id&quot;,&quot;Name&quot;,&quot;Year&quot;,&quot;Release Date&quot;,&quot;Director&quot;,&quot;Creator&quot;,&quot;Actors&quot;,&quot;Cast&quot;,&quot;Language&quot;,&quot;Country&quot;,&quot;Duration&quot;,&quot;RatingValue&quot;,&quot;RatingCount&quot;,&quot;ReviewCount&quot;,&quot;Genre&quot;,&quot;Filming Locations&quot;,&quot;Description&quot;</span><br></pre></td></tr></table></figure></p>
+<p>请使用sqoop/hadoop进行schema matching，不需要record matching，转化为统一的表结构（自行定义）。 </p>
+</blockquote>
+<h1 id="Sqoop配置"><a href="#Sqoop配置" class="headerlink" title="Sqoop配置"></a>Sqoop配置</h1><p><strong>服务器环境:</strong></p>
+<ul>
+<li>Ubuntu 16.04</li>
+<li>Hadoop: 2.7.6</li>
+<li>hbase: 1.4.8</li>
+</ul>
+<p>配置参考<a target="_blank" rel="noopener" href="https://www.tutorialspoint.com/sqoop">tutorialspoint</a>.</p>
+<h2 id="安装Sqoop"><a href="#安装Sqoop" class="headerlink" title="安装Sqoop"></a>安装Sqoop</h2><h3 id="下载解压"><a href="#下载解压" class="headerlink" title="下载解压"></a>下载解压</h3><p>从<a target="_blank" rel="noopener" href="https://sqoop.apache.org/">Sqoop官网</a>找到镜像下载压缩包, 解压到<code>/usr/local</code>,并重命名.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz -C /usr/<span class="built_in">local</span></span><br><span class="line">mv /usr/<span class="built_in">local</span>/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz /usr/<span class="built_in">local</span>/sqoop</span><br></pre></td></tr></table></figure>
+<h3 id="修改环境"><a href="#修改环境" class="headerlink" title="修改环境"></a>修改环境</h3><p>修改<code>~/.bashrc</code>, 添加相关的路径.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Sqoop</span></span><br><span class="line"><span class="built_in">export</span> SQOOP_HOME=/usr/lib/sqoop <span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$SQOOP_HOME</span>/bin</span><br></pre></td></tr></table></figure>
+<h3 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h3><p>根据模板创建并修改<code>conf/sqoop-env.sh</code>, 添加相关的路径.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$SQOOP_HOME</span></span><br><span class="line"><span class="comment"># 创建sqoop-env.sh</span></span><br><span class="line">mv sqoop-env-template.sh sqoop-env.sh</span><br></pre></td></tr></table></figure>
+<p>打开文件, 添加下列路径.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> HADOOP_COMMON_HOME=/usr/<span class="built_in">local</span>/hadoop </span><br><span class="line"><span class="built_in">export</span> HADOOP_MAPRED_HOME=/usr/<span class="built_in">local</span>/hadoop</span><br><span class="line"><span class="built_in">export</span> HBASE_HOME=/usr/<span class="built_in">local</span>/hbase</span><br></pre></td></tr></table></figure>
+<h3 id="下载mysql-connector"><a href="#下载mysql-connector" class="headerlink" title="下载mysql connector"></a>下载mysql connector</h3><p>从<a target="_blank" rel="noopener" href="http://ftp.ntu.edu.tw/MySQL/Downloads/Connector-J/">NTU</a>的镜像下载最新的java connector并解压, 将解压后文件中的jar包复制到<code>$SQOOP_HOME/lib</code>.</p>
+<h2 id="安装MySQL"><a href="#安装MySQL" class="headerlink" title="安装MySQL"></a>安装MySQL</h2><p>通过apt下载mysql的server和client.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt-get install mysql-server</span><br><span class="line">apt install mysql-client</span><br><span class="line">apt install libmysqlclient-dev</span><br></pre></td></tr></table></figure>
+<h1 id="Sqoop数据传输"><a href="#Sqoop数据传输" class="headerlink" title="Sqoop数据传输"></a>Sqoop数据传输</h1><h2 id="将数据导入MySQL"><a href="#将数据导入MySQL" class="headerlink" title="将数据导入MySQL"></a>将数据导入MySQL</h2><p>导入mysql的过程主要有两部分: 其一是根据csv的header去建表；其二是导入csv文件到表中.</p>
+<h3 id="通过csv自动生成table-scheme"><a href="#通过csv自动生成table-scheme" class="headerlink" title="通过csv自动生成table scheme"></a>通过csv自动生成table scheme</h3><p>mysql不支持从一个data scheme的文件自动识别对应的table scheme, 所以在导入csv文件之前,必须先手动创建能和csv文件的header对应的表. 好在通过<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/9998596/create-mysql-table-directly-from-csv-file-using-the-csv-storage-engine">stackoverflow的帖子</a>找到了一个可以根据csv生成table schema的<a target="_blank" rel="noopener" href="https://csv-schema.surge.sh/">工具</a>.</p>
+<p><img src="https://i.loli.net/2019/04/04/5ca59f45b4cd0.png" alt=""></p>
+<h3 id="建表并导入csv"><a href="#建表并导入csv" class="headerlink" title="建表并导入csv"></a>建表并导入csv</h3><h4 id="建表"><a href="#建表" class="headerlink" title="建表"></a>建表</h4><ul>
+<li>创建imdb的表</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table `imdb` (`id` varchar(153), `name` varchar(146), `yearrange` varchar(14), `releasedate` varchar(39), `director` text, `creator` varchar(103) null, `cast` text null, `duration` varchar(13) null, `ratingvalue` varchar(13) null, `contentrating` varchar(135), `genre` varchar(130) null, `url` varchar(127), `description` text null);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>创建烂番茄的表</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table `rt` (`id` varchar(153), `name` varchar(146) null, `year` int null, `releasedate` varchar(39) null, `director` varchar(325) null, `creator` varchar(103) null, `actors` varchar(126) null, `cast` text null, `language` varchar(86) null, `country` varchar(102) null, `duration` varchar(13) null, `ratingvalue` float(8, 2) null, `ratingcount` varchar(10) null, `reviewcount` varchar(21) null, `genre` varchar(130) null, `filming_locations` varchar(137) null, `description` text null);</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2019/04/04/5ca61e347cba3.png" alt=""></p>
+<h4 id="导入csv"><a href="#导入csv" class="headerlink" title="导入csv"></a>导入csv</h4><p>:bug: 遇到报错不能导入csv, 后来查明是mysql文件权限的问题,将csv文件移到<code>/var/lib/mysql-files/</code>下, 解决.</p>
+<ul>
+<li>导入imdb</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load data infile &#x27;/var/lib/mysql-files/data/imdb.csv&#x27; into table imdb fields terminated by &#x27;,&#x27; optionally enclosed by &#x27;&quot;&#x27; escaped by &#x27;&quot;&#x27; lines terminated by &#x27;\n&#x27;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>导入烂番茄</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">load data infile &#x27;/var/lib/mysql-files/data/rotten_tomatoes.csv&#x27; into table rt fields terminated by &#x27;,&#x27; optionally enclosed by &#x27;&quot;&#x27; escaped by &#x27;&quot;&#x27; lines terminated by &#x27;\n&#x27;;</span><br></pre></td></tr></table></figure>
+<h2 id="从mysql导入hbase"><a href="#从mysql导入hbase" class="headerlink" title="从mysql导入hbase"></a>从mysql导入hbase</h2><h3 id="sqoop传输"><a href="#sqoop传输" class="headerlink" title="sqoop传输"></a>sqoop传输</h3><p>我们用<code>sqoop import</code>将数据从mysql导入hbase中. 就这么一个命令的事儿除了很多差错.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqoop import --connect jdbc:mysql://localhost/hw1 --username root -P --table imdb --m 1 --hbase-create-table</span><br></pre></td></tr></table></figure>
+<p>最开始,我们遇到了无法接受包的错误, 具体报错如下:</p>
+<p><img src="https://i.loli.net/2019/04/04/5ca60321232f4.png" alt=""></p>
+<p>参考网上的解答, 我们尝试修改了<code>wait_timeout</code>和<code>bind_address</code>这两个流传度最广泛的解决方案, 均没有效果.</p>
+<p><img src="https://i.loli.net/2019/04/04/5ca60352e14ad.png" alt=""></p>
+<p>后来开始想到也许是我的sqoop命令错了, 想到sqoop会将数据送到hbase集群, 我将<code>localhost</code>改成了ip名:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqoop import --connect jdbc:mysql://host0/hw1 --username root -P --table imdb --m 1 --hbase-create-table</span><br></pre></td></tr></table></figure>
+<p>这时换了个报错:</p>
+<p><img src="https://i.loli.net/2019/04/04/5ca604555e218.png" alt=""></p>
+<p>这个mysql的权限问题很好解决, 我们修改了user表:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt;update user set host = &#x27;%&#x27; where user = &#x27;root&#x27;;</span><br><span class="line">mysql&gt;select host, user from user;</span><br></pre></td></tr></table></figure>
+<p>修改结果如下:</p>
+<p><img src="https://i.loli.net/2019/04/04/5ca60397efda0.png" alt=""></p>
+<p>并成功完成了传输.</p>
+<h3 id="用sqoop的query进行合并"><a href="#用sqoop的query进行合并" class="headerlink" title="用sqoop的query进行合并"></a>用sqoop的query进行合并</h3><p>我们在sqoop命令中添加了—query的参数, 通过它来实现schema match的需求:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sqoop import \</span><br><span class="line">--connect jdbc:mysql://host0/hw1 \</span><br><span class="line">--username root \</span><br><span class="line">--password <span class="string">&#x27;000000&#x27;</span> \</span><br><span class="line">--query <span class="string">&quot;select imdb.*, rt.* from imdb join rt on (imdb.name = rt.name) where \$CONDITIONS&quot;</span> \</span><br><span class="line">--split-by id \</span><br><span class="line">--hbase-table movie \</span><br><span class="line">--hbase-create-table \</span><br><span class="line">--hbase-row-key name \</span><br><span class="line">--column-family name \</span><br><span class="line">--m 1</span><br></pre></td></tr></table></figure>
+<p>:bug: 不过这样会遇到报错:</p>
+<p><img src="https://i.loli.net/2019/04/04/5ca62273530c0.png" alt=""></p>
+<p>也就是出现了重复列, 无奈只能手动将*挨个替换成不重复的列:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sqoop import \</span><br><span class="line">--connect jdbc:mysql://host0/hw1 \</span><br><span class="line">--username root \</span><br><span class="line">--password <span class="string">&#x27;000000&#x27;</span> \</span><br><span class="line">--query <span class="string">&quot;select imdb.id as iid,imdb.name,imdb.yearrange,imdb.releasedate,imdb.director,imdb.creator,imdb.cast,imdb.duration,imdb.ratingValue,imdb.contentRating,imdb.genre,imdb.url,imdb.description,rt.id,rt.year,rt.actors,rt.language,rt.country,rt.ratingCount,rt.reviewCount,rt.filming_locations from imdb join rt on (imdb.name = rt.name) where \$CONDITIONS&quot;</span> \</span><br><span class="line">--split-by iid \</span><br><span class="line">--hbase-table movie \</span><br><span class="line">--hbase-create-table \</span><br><span class="line">--hbase-row-key name \</span><br><span class="line">--column-family region \</span><br><span class="line">--m 1</span><br></pre></td></tr></table></figure>
+<p>:bug: 不过命令修改之后我们还是遇到了reconnect的错误:</p>
+<p><img src="https://i.loli.net/2019/04/04/5ca619099b799.png" alt=""></p>
+<p>参考<a target="_blank" rel="noopener" href="https://community.cloudera.com/t5/Hadoop-101-Training-Quickstart/Connecting-to-ResourceManager/td-p/39539">cloudera</a>上的帖子, 我们重启了yarn:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start-yarn.sh</span><br></pre></td></tr></table></figure>
+<p>sqoop顺利执行, 完成任务:</p>
+<p><img src="https://i.loli.net/2019/04/04/5ca61eb1b239d.png" alt=""></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>If it helps, you may buy me a cup of coffee plz.</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Virgil Sun WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Virgil Sun Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Virgil Sun</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="https://www.virgilsun.com/%E7%94%A8Sqoop%E8%BF%9B%E8%A1%8C%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EHadoop%E7%94%9F%E6%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%BB%8EMySQL%E5%88%B0HBase/" title="用Sqoop进行关系型数据库与Hadoop生态的数据传输:从MySQL到HBase">https://www.virgilsun.com/%E7%94%A8Sqoop%E8%BF%9B%E8%A1%8C%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EHadoop%E7%94%9F%E6%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%BB%8EMySQL%E5%88%B0HBase/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+            <a href="/tags/Sqoop/" rel="tag"># Sqoop</a>
+          
+            <a href="/tags/Hbase/" rel="tag"># Hbase</a>
+          
+            <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+              <div id="needsharebutton-postbottom">
+                <span class="btn">
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </span>
+              </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Stream%20Processing%20Based%20on%20Flink/" rel="next" title="Stream Processing Based on Flink">
+                <i class="fa fa-chevron-left"></i> Stream Processing Based on Flink
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%AD%98%E5%82%A8%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96/" rel="prev" title="知识图谱存储与可视化">
+                知识图谱存储与可视化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+        <div id="lv-container" data-id="city" data-uid="MTAyMC80MzU0NS8yMDA4NA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://i.loli.net/2019/04/02/5ca34b140d93c.jpg"
+                alt="Virgil Sun"/>
+            
+              <p class="site-author-name" itemprop="name">Virgil Sun</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">categories</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="https://github.com/SwJay" title="GitHub &rarr; https://github.com/SwJay" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span><br/>
+                  
+                    
+                  
+                  <a href="mailto:virgilsun@outlook.com" title="Mail &rarr; mailto:virgilsun@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="https://www.weibo.com/u/1960293815" title="微博 &rarr; https://www.weibo.com/u/1960293815" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="/atom.xml" title="RSS &rarr; /atom.xml"><i class="fa fa-fw fa-fas fa-rss"></i>RSS</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.drg1998.cn/" title="https://blog.drg1998.cn/" rel="noopener" target="_blank">Guo Shuai</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Sqoop%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">Sqoop配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Sqoop"><span class="nav-number">1.1.</span> <span class="nav-text">安装Sqoop</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E8%A7%A3%E5%8E%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">下载解压</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E7%8E%AF%E5%A2%83"><span class="nav-number">1.1.2.</span> <span class="nav-text">修改环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.3.</span> <span class="nav-text">修改配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BDmysql-connector"><span class="nav-number">1.1.4.</span> <span class="nav-text">下载mysql connector</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85MySQL"><span class="nav-number">1.2.</span> <span class="nav-text">安装MySQL</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Sqoop%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-number">2.</span> <span class="nav-text">Sqoop数据传输</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%86%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5MySQL"><span class="nav-number">2.1.</span> <span class="nav-text">将数据导入MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87csv%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90table-scheme"><span class="nav-number">2.1.1.</span> <span class="nav-text">通过csv自动生成table scheme</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E8%A1%A8%E5%B9%B6%E5%AF%BC%E5%85%A5csv"><span class="nav-number">2.1.2.</span> <span class="nav-text">建表并导入csv</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%BA%E8%A1%A8"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">建表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5csv"><span class="nav-number">2.1.2.2.</span> <span class="nav-text">导入csv</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8Emysql%E5%AF%BC%E5%85%A5hbase"><span class="nav-number">2.2.</span> <span class="nav-text">从mysql导入hbase</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sqoop%E4%BC%A0%E8%BE%93"><span class="nav-number">2.2.1.</span> <span class="nav-text">sqoop传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8sqoop%E7%9A%84query%E8%BF%9B%E8%A1%8C%E5%90%88%E5%B9%B6"><span class="nav-number">2.2.2.</span> <span class="nav-text">用sqoop的query进行合并</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Virgil Sun</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      已有
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次到访 w
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="//cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/jquery_lazyload@1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.2.1/velocity.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3.0.0/dist/js/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '用Sqoop进行关系型数据库与Hadoop生态的数据传输从MySQL到HBase/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+    
+  
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+  
+  
+    
+  
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+    
+      pbOptions = {};
+      
+        pbOptions.iconStyle = "box";
+      
+        pbOptions.boxForm = "horizontal";
+      
+        pbOptions.position = "bottomCenter";
+      
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</body>
+</html>

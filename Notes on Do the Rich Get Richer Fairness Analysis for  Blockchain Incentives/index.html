@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"/>
+
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"/>
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+
+
+  <meta name="google-site-verification" content="true"/>
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="vh3BWN1atu" />
+
+
+
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3.0.0/dist/css/jquery.fancybox.min.css"/>
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1"/>
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.0.1">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: true,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//st.flyhigher.top/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '2']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+
+  <meta name="description" content="Original PaperAbstract Motivation PoS is proposed to tackle the energy inefficiency of PoW. The concern of rich get richer under PoS is heavily debated.   Define new concept Expectational fairness: in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Notes on Do the Rich Get Richer? Fairness Analysis for Blockchain Incentives">
+<meta property="og:url" content="https://www.virgilsun.com/Notes%20on%20Do%20the%20Rich%20Get%20Richer%20Fairness%20Analysis%20for%20%20Blockchain%20Incentives/index.html">
+<meta property="og:site_name" content="Sun&#39;s Blog">
+<meta property="og:description" content="Original PaperAbstract Motivation PoS is proposed to tackle the energy inefficiency of PoW. The concern of rich get richer under PoS is heavily debated.   Define new concept Expectational fairness: in">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2021/09/03/DIpoHtU2qx5iEYC.png">
+<meta property="og:image" content="https://i.loli.net/2021/09/03/u74MqTsjrQh3Kin.png">
+<meta property="og:image" content="https://i.loli.net/2021/09/03/QlKA6VkfI4toPSC.png">
+<meta property="og:image" content="https://i.loli.net/2021/09/03/zKC8jw1frBY4cI5.png">
+<meta property="og:image" content="https://i.loli.net/2021/09/03/QHUyREn8sNdoFL6.png">
+<meta property="article:published_time" content="2021-09-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-30T02:29:57.111Z">
+<meta property="article:author" content="Virgil Sun">
+<meta property="article:tag" content="Blockchain">
+<meta property="article:tag" content="Paper">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/09/03/DIpoHtU2qx5iEYC.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sun's Blog" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.virgilsun.com/Notes%20on%20Do%20the%20Rich%20Get%20Richer%20Fairness%20Analysis%20for%20%20Blockchain%20Incentives/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Notes on Do the Rich Get Richer? Fairness Analysis for Blockchain Incentives | Sun's Blog</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db5a55d89cc89dd77ff08de18d30e45f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sun's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">Goose had left marks.</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>Tags<span class="badge">22</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>Categories<span class="badge">3</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>Archives<span class="badge">14</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-13/36">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/sentence" rel="section"><i class="menu-item-icon fa fa-fw fa-align-left"></i> <br/>13/36</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/SwJay" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.virgilsun.com/Notes%20on%20Do%20the%20Rich%20Get%20Richer%20Fairness%20Analysis%20for%20%20Blockchain%20Incentives/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Virgil Sun"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="https://i.loli.net/2019/04/02/5ca34b140d93c.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sun's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Notes on Do the Rich Get Richer? Fairness Analysis for Blockchain Incentives
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2021-09-03 00:00:00" itemprop="dateCreated datePublished" datetime="2021-09-03T00:00:00+08:00">2021-09-03</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-11-30 10:29:57" itemprop="dateModified" datetime="2021-11-30T10:29:57+08:00">2021-11-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Blockchain/" itemprop="url" rel="index"><span itemprop="name">Blockchain</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/Notes%20on%20Do%20the%20Rich%20Get%20Richer%20Fairness%20Analysis%20for%20%20Blockchain%20Incentives/" class="leancloud_visitors" data-flag-title="Notes on Do the Rich Get Richer? Fairness Analysis for Blockchain Incentives">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                
+                  
+                    
+                  
+                
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Original-Paper"><a href="#Original-Paper" class="headerlink" title="Original Paper"></a>Original Paper</h1><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><ul>
+<li>Motivation<ul>
+<li>PoS is proposed to tackle the energy inefficiency of PoW.</li>
+<li>The concern of rich get richer under PoS is heavily debated.</li>
+</ul>
+</li>
+<li>Define new concept<ul>
+<li>Expectational fairness: income should be proportional to initial investment.</li>
+<li>Robust fairness: minig revenue should converge with high probability.</li>
+</ul>
+</li>
+<li>Analysis<ul>
+<li>PoW: both fairness.</li>
+<li>PoS<ul>
+<li>multi-lottery PoS (Qtum, Blackcoin): expectational fairness.</li>
+<li>single-lottery PoS (NXT): neither.</li>
+<li>compound PoS (ETH 2.0): outperforms ML-PoS on robust fairness while still maintaining expectational fairness.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h2><ul>
+<li><p>Background</p>
+<ul>
+<li><p>introduce PoW, PoW consume energy, propose PoS.</p>
+</li>
+<li><p>Concerns on PoS: rich get richer. scarcely studied.</p>
+<blockquote>
+<p>We aim to tackle this issue by leveraging the notion of fairness, which is one of the principles of fairness, accountability and transparency (FAT) of responsible data science [28].</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li><p>Contribution</p>
+<ul>
+<li>notion of fairness<ul>
+<li>expectational fairness: mean of revenue, between revenue and initial resource.</li>
+<li>robust fairness: variance of revenue, between mining and random.</li>
+</ul>
+</li>
+<li>analysis<ul>
+<li>PoW: leader selection is proportional to hash, guarantee both fairness.</li>
+<li>PoS</li>
+</ul>
+</li>
+<li>contribution<ul>
+<li>notions for fairness</li>
+<li>theoretical analysis</li>
+<li>expereiment</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-Incentive-Models-of-Blockchains"><a href="#2-Incentive-Models-of-Blockchains" class="headerlink" title="2 Incentive Models of Blockchains"></a>2 Incentive Models of Blockchains</h2><ul>
+<li><p>PoW Incentive Model</p>
+<ul>
+<li><p>solve PoW puzzle: $\mathrm{Hash}(\mathrm{nonce}, …) &lt; D$.</p>
+</li>
+<li><p>Probablistic model</p>
+<ul>
+<li>mining time:  exponential distribution  $f(t,\mu)=\mu e^{-\mu t}$.</li>
+<li>A beat B</li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{aligned}
+Pr[T_A<T_B] &= \int^\infty_0\int^{t_B}_0 \mu_Ae^{-\mu_At_A}\mu_Be^{-\mu_Bt_B}\mathrm{d}t_A\mathrm{d}t_B \\
+&= \frac{\mu_A}{\mu_A+\mu_B} = \frac{H_A}{H_A+H_B}
+\end{aligned}</script></li>
+</ul>
+</li>
+<li><p>Multi-Lottery PoS Incentive Model</p>
+<ul>
+<li>$\mathrm{Hash}(\mathrm{time}, …) &lt; D\cdot\mathrm{stake}$, wait for timestamp to fulfill difficulty.</li>
+<li><p>probablisitc model</p>
+<ul>
+<li><p>Hash(): uniform distribution in $[0,2^{256}-1]$.</p>
+</li>
+<li><p>One shot (one timestamp): Bernoulli distribution  with $p=\frac{D\cdot stake}{2^{256}}$.</p>
+</li>
+<li><p>mining time: geometric distribution with the same p, $P(T=k)=(1-p)^{k-1}p$.</p>
+</li>
+<li><p>A beat B:</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+P(\text{A beat B}) &= Pr[T_A<T_B] + \frac{1}{2}Pr[T_A=T_B]\\
+&= \sum_{t_B=1}^\infty \sum_{t_A=1}^{t_B-1} (1-p_A)^{t_A-1}p_A(1-pB)^{t_B-1}p_B+ \frac{1}{2}\cdot\frac{p_A p_B}{p_A + p_B -  p_A p_B}\\
+&= \frac{p_A - p_A p_B/2}{p_A + p_B - p_A p_B}
+\end{aligned}</script><p>$p_A p_B$ is negligible, therefore $P(\text{A beat B})=\frac{S_A}{S_A + S_B}$.</p>
+</li>
+</ul>
+</li>
+<li><p>:question: really one shot at a timestamp? I can compute the release time in advance, then I can continue mining in the spare time?</p>
+</li>
+</ul>
+</li>
+<li><p>Single-Lottery PoS Incentive Model</p>
+<ul>
+<li><p>single trial: $time=\text{basetime}\cdot \text{Hash(pk,…)}/\mathrm{stake}$.</p>
+</li>
+<li><p>Probablistic model</p>
+<ul>
+<li><p>Assume $S_A\leq S_B$.</p>
+</li>
+<li><p>A beat B</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+P(\text{A beat B}) &= Pr[T_A<T_B] + \frac{1}{2}Pr[T_A=T_B]\\
+&= \sum_{h_B=0}^{2^{256}-1} \sum_{h_A=0}^{\frac{S_A}{S_B}h_B-1} \frac{1}{2^{256\cdot2}} + \frac{1}{2}\sum_{h_B=0}^{2^{256-1}}\frac{1}{2^{256\cdot2}}\\
+&= \frac{S_A}{2S_B}\cdot \frac{2^{256}-1}{2^{256}}+\frac{1}{2\cdot2^{256}}\\
+&\simeq\frac{S_A}{2S_B}
+\end{aligned}</script></li>
+</ul>
+</li>
+<li><p>When $S_A&lt;S_B$, $\frac{S_A}{2S_B}&lt;\frac{S_A}{S_A+S_B}$.</p>
+</li>
+</ul>
+</li>
+<li><p>Compound PoS Incentive Model</p>
+<ul>
+<li>identity: proposer and attester<ul>
+<li>Attester:<ul>
+<li>every 32 Ethers deposited in the smart contract =&gt; 1 identity.</li>
+<li>attesters are partitioned into 32 shards to verify in parallel.</li>
+</ul>
+</li>
+<li>Proposer:<ul>
+<li>every shard select one identity as proposer uniformly.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>compound incentive:<ul>
+<li>Attester: $3\cdot base\cdot vote$, where vote denotes percentageof online and active attesters (usually 100%).</li>
+<li>Proposer: $\frac{1}{8}\cdot base \cdot N$, where $N$ denotes total number of identities assgined to all miners.</li>
+</ul>
+</li>
+<li>probablistic model<ul>
+<li>Scenario: <ul>
+<li>2 players.</li>
+<li>$P$ shards.</li>
+<li>$v$ and $w$  denote the total rewards for attesters and proposers.</li>
+</ul>
+</li>
+<li>revenue for A<ul>
+<li>revenue as attester: $v\cdot\frac{S_A}{S_A+S_B}$.</li>
+<li>revenue as proposer: $w\cdot \frac{X}{P}$,where $X$ is #blocks proposed by A in the epoch, $X$ follows binomial distribution $X\sim Bin(P,\frac{S_A}{S_A+S_B})$.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="3-Expectational-Fairness"><a href="#3-Expectational-Fairness" class="headerlink" title="3 Expectational Fairness"></a>3 Expectational Fairness</h2><ul>
+<li><p>Assumption and Definition</p>
+<ul>
+<li>Assumption<ul>
+<li>2 player scenario.</li>
+<li>resource normalized: $a+b=1$.</li>
+<li>Reward of each epoch remains the same: $w$ for proposer, $v$  for inflation in C-PoS.</li>
+<li>no additional action like withdrawl or top-up.</li>
+</ul>
+</li>
+<li>Definition: expectational fairness<ul>
+<li>$E[\lambda_A]=a$, where $\lambda_A$ denote revenue ratio for A.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Expectational Fairness</p>
+<ul>
+<li><p>PoW</p>
+<ul>
+<li>revenue for 1 block: $w$.</li>
+<li>$X$: #blocks mined by A, follows binomial distribution $Bin(n,a)$ with $E(x)=na$.</li>
+<li>expected revenue for A: $wE[X]=wna$.</li>
+<li>$E[\lambda_A]=\frac{wE[X]}{wn}=a$.</li>
+</ul>
+</li>
+<li><p>ML-PoS</p>
+<ul>
+<li><p>$X_i \in \{0,1\}$ indicates whether A propose the $i$-th block, $X_i$ follows Bernoulli distribution with $p=\frac{S_{i-1}}{1+w(i-1)}$.</p>
+</li>
+<li><p>$S_i$: stakes for A after i blocks, $S_0=a$.</p>
+</li>
+<li><p>$S_{i+1}=S_{i} + w\cdot X_{i+1}$.</p>
+</li>
+<li><script type="math/tex; mode=display">
+\begin{aligned}
+E[S_{i+1}|S_i] &= S_i+\frac{wS_i}{1+w_i}\\
+E[S_{i+1}] &= E[E[S_{i+1}|S_i]] = \frac{1+w(i+1)}{1+wi}E[S_i] \\
+E[S_i] &= S_0 \prod_{k=0}^{i-1}\frac{1+w(k+1)}{1+wk}=a(1+wi) \\
+\therefore E[\lambda_A] &= \frac{E[S_n]-a}{wn}=a
+\end{aligned}</script></li>
+</ul>
+</li>
+<li><p>SL-PoS</p>
+<ul>
+<li><p>1st block</p>
+<ul>
+<li><p>$X_i \in \{0,1\}$ indicates whether A propose the $i$-th block, $X_i$ follows Bernoulli distribution with $p=\frac{a}{2b}$.</p>
+</li>
+<li><p>$E[X_1]=\frac{a}{2b}&lt;a$.</p>
+</li>
+</ul>
+</li>
+<li><p>infinity #blocks</p>
+<ul>
+<li><p>assume it follows expectational fairness: $E[\lambda_A]=a$ for all $a$.</p>
+</li>
+<li><script type="math/tex; mode=display">
+\begin{aligned}
+E[n\lambda_A] &= E[n\lambda_A|X_1=0]Pr[X_1=0] + E[n\lambda_A|X_1=1]Pr[X_1=1]\\
+E[n\lambda_A-X_1|X_1]&=(n-1)\cdot\frac{a+wX_1}{1+w} \\
+\therefore E[n\lambda_A] &= \frac{a(n-1)}{1+w}Pr[X_1=0]+(1+\frac{(a+w)(n-1)}{1+w})Pr[X_1=1]\\
+na &= \frac{a(n-1)}{1+w}(1-\frac{a}{2b})+(1+\frac{(a+w)(n-1)}{1+w})\frac{a}{2b}\\
+0 &= a(b-a)(nw+1)
+\end{aligned}</script></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>C-PoS</p>
+<ul>
+<li><p>$Y_i$ represents #proposer assigned to A at  epoch $i$, $Y_i \sim Bin(P,\frac{S_{i-1}}{1+(w+v)(i-1)})$.</p>
+</li>
+<li><p>$S_{i+1}=S_i+\frac{wY_{i+1}}{P}+\frac{vS_i}{1+(w+v)i}$.</p>
+</li>
+<li><script type="math/tex; mode=display">
+\begin{aligned}
+E[S_{i+1}|S_i] &= S_i+\frac{wS_i}{1+(w+v)i}+\frac{vS_i}{1+(w+v)i} \\
+E[S_{i+1}] &= E[E[S_{i+1}|S_i]]= \frac{1+(w+v)(i+1)}{1+(w+v)i}E[S_i] \\
+E[S_i] &= S_0\prod_{k=0}^{i-1}\frac{1+(w+v)(k+1)}{1+(w+v)k}=a(1+(w+v)i) \\
+\therefore E[\lambda_A] &= \frac{E[S_n]-a}{(w+v)n} = a
+\end{aligned}</script></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-Robust-Fairness"><a href="#4-Robust-Fairness" class="headerlink" title="4 Robust Fairness"></a>4 Robust Fairness</h2><ul>
+<li><p>Definition of Robust Fairness $(\epsilon,\delta)-Fairness$</p>
+<ul>
+<li>For any given pair $(\epsilon, \delta)$, s.t. $\epsilon \geq 0$  and $0 \leq \delta \leq 1$.</li>
+<li>Satisfy $Pr[(1-\epsilon)a \leq \lambda_A \leq (1+\epsilon)a]\geq 1-\delta$.</li>
+</ul>
+</li>
+<li><p>Robust Fairness</p>
+<ul>
+<li><p>PoW</p>
+<ul>
+<li>cdf of random variable $n\lambda_A$: $F(k;n,a):=Pr[n\lambda_A\leq k]=\sum_{i=0}^k\bigl(\begin{smallmatrix}n\\i\end{smallmatrix}\bigr)a^i(1-a)^{n-i}$.</li>
+<li>$\Delta(\epsilon;n,a)=F(\lfloor n(1+\epsilon)a \rfloor;n,a)-F(\lfloor n(1-\epsilon)a \rfloor;n,a)\geq 1-\delta$.</li>
+<li>Hoeffding inequality: $Pr[(1-\epsilon)a\leq \lambda_A \leq (1+\epsilon)a]\geq 1-2e^{-2na^2\epsilon^2}$.</li>
+<li>Thus $1-2e^{-2na^2\epsilon^2} \geq 1-\delta$ gives when $n \geq \frac{\ln{\frac{2}{\delta}}}{2a^2\epsilon^2}$, $(\epsilon,\delta)-fairness$ is preserved.</li>
+</ul>
+</li>
+<li><p>ML-PoS</p>
+<ul>
+<li><p>modeled as Pólya Urn s.t. $\lambda_A$ Converges to $\mathrm{Beta}(\frac{a}{w},\frac{b}{w})$ almost surely.</p>
+</li>
+<li><p>sufficient condition: $I_{(1+\epsilon)a}(\frac{a}{w},\frac{b}{w})-I_{(1-\epsilon)a}(\frac{a}{w},\frac{b}{w})\geq 1-\delta$.</p>
+</li>
+<li><p>Solve with mantigale</p>
+<ul>
+<li>define $M_i=E[S_n|X_1,X_2,…,X_i]$.</li>
+<li>Prove martingales</li>
+</ul>
+<script type="math/tex; mode=display">
+\begin{aligned}
+E[M_i|X_1,X_2,..,X_{i-1}] &= E[E[S_n|X_1,X_2,...,X_i]|X_1,X_2,...,X_{i-1}] \\
+&= E[S_n|X_1,X_2,...,X_{i-1}]=M_{i-1}
+\end{aligned}</script><ul>
+<li>solve<script type="math/tex; mode=display">
+\begin{aligned}
+M_i &= E[S_n|S_i] = S_i+\frac{(n-i)wS_i}{1+iw} = \frac{1+nw}{1+iw}S_i\\
+M_i-M_{i-1} &= \frac{1+nw}{1+iw}S_i - \frac{1+nw}{1+(i-1)w}S_{i-1} \\
+&= \frac{1+nw}{1+iw}(S_{i-1}+wX_i) - \frac{1+nw}{1+(i-1)w}S_{i-1}  \\
+ub(M_i-M_{i-1}) - lb(M_i-M_{i-1})&=\frac{(1+nw)w}{1+iw}
+\end{aligned}</script></li>
+<li>by Azuma inequality we have $Pr[|M_n-M_0|\geq\gamma]\leq2\exp(-\frac{2\gamma^2}{w^2(1+nw)n})$.</li>
+</ul>
+</li>
+<li><p>sufficient</p>
+<p> condition: $\frac{1}{n}+w\leq\frac{2a^2\epsilon^2}{\ln{\frac{2}{\delta}}}$</p>
+</li>
+</ul>
+</li>
+<li><p>SL-PoS</p>
+<ul>
+<li><p>Stochastic approximation (SA)</p>
+<ul>
+<li>$\{Z_n\}$ is a stochastic process taking value in $[0,1]$, adapted to the filtration $\mathcal{F}_n$, that satisfies $Z_{n+1}-Z_n=\gamma_{n+1}(f(Z_n)+U_{n+1})$, where $\gamma_n, U_n \in \mathcal{F}_n$.</li>
+<li>conditions that almost surely hold<ul>
+<li>$c_l/n \leq \gamma_n \leq c_u/n$</li>
+<li>$|U_n|\leq K_u$</li>
+<li>$|f(Z_n)|\leq K_f$</li>
+<li>$|E[\gamma_{n+1}U_{n+1}|\mathcal{F}_n]|\leq K_e\gamma^2_n$</li>
+</ul>
+</li>
+<li>interpretation<ul>
+<li>$\gamma_n$: step size, decrease along with $n$</li>
+<li>$\gamma_nU_n$: noise with expectation tending to 0 quickly.</li>
+<li>$Z_n$ converges to the zero point of $f(\cdot)$.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>model SL-PoS as SA</p>
+<ul>
+<li><p>$Z_n$: fraction of A’s stakes, $Z_0=a$</p>
+</li>
+<li><p>$f(Z_n)=E[X_{n+1}|Z_n]-Z_n$: direct $Z_n$ by the probability that A wins the next block</p>
+</li>
+<li><p>$\gamma_n$: decrease along with $n$, since more stakes are issued, one block reward has less impact.</p>
+</li>
+<li><p>Result: $\lambda_A=0$ or $\lambda_A=1$ are stable zero point of SA.</p>
+<p><img src="https://i.loli.net/2021/09/03/DIpoHtU2qx5iEYC.png" alt="fig1"></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>C-PoS</p>
+<ul>
+<li><script type="math/tex; mode=display">
+\begin{aligned}
+S_{i+1} &= S_i + \frac{wY_{i+1}}{P}+\frac{vS_i}{1+(w+v)i} \\
+E[S_n|S_i] &= S_i+\frac{(w+v)(n-i)S_i}{1+(w+v)i} = \frac{1+(w+v)n}{1+(w+v)i}S_i \\
+\end{aligned}</script></li>
+<li><p>Define $S_{i,j}$: be the number of stakes possessed by 𝐴 after completing the $j$-th shard of the $i$-th epoch to compute martingale $M_{i,j}=E[S_i|S_{i-1},S_{i,j}]$.</p>
+</li>
+<li><p>By Azuma inequality, explicit sufficient condition:</p>
+<ul>
+<li><script type="math/tex; mode=display">
+\begin{aligned}
+Pr[|M_n-M_0|\geq\gamma]&\leq 2exp(-\frac{2\gamma^2}{w^2(1+nw)n})\\
+\text{where\ } \gamma &= na(w+v)\epsilon \\
+\therefore \frac{w^2(\frac{1}{n}+w+v)}{(w+v)^2P}\leq\frac{2a^2\epsilon^2}{\ln{\frac{2}{\delta}}}
+\end{aligned}</script></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-Experimental-Evaluation"><a href="#5-Experimental-Evaluation" class="headerlink" title="5 Experimental Evaluation"></a>5 Experimental Evaluation</h2><ul>
+<li><p>Experimental setup</p>
+<ul>
+<li>deployment<ul>
+<li>Geth client (v1.9.11) for PoW</li>
+<li>Qtum core (v0.19.0.1) for ML-PoS</li>
+<li>NXT client (v1.12.2) for SL-PoS</li>
+<li>only simulation for C-PoS</li>
+</ul>
+</li>
+<li>fairness parameter<ul>
+<li>$\epsilon=0.1$, $\delta=0.1$</li>
+<li>with at least 90% probability that the return on investment lies in $[0.9, 1.1]$</li>
+<li>fair region: $[(1-\epsilon)a,(1+\epsilon)a]$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Fairness results</p>
+<ul>
+<li><p>parameter</p>
+<ul>
+<li>$a=20%$</li>
+<li>For ML-PoS and SL-PoS, $w=0.01$</li>
+<li>For C-PoS, $w=0.01, v=0.1$</li>
+</ul>
+</li>
+<li><p>result</p>
+<p><img src="https://i.loli.net/2021/09/03/u74MqTsjrQh3Kin.png" alt="fig2"></p>
+</li>
+</ul>
+</li>
+<li><p>Expectational fairness for SL-PoS</p>
+<p><img src="https://i.loli.net/2021/09/03/QlKA6VkfI4toPSC.png" alt="fig3"></p>
+</li>
+<li><p>robust fairness</p>
+<ul>
+<li><p>initial resource allocation</p>
+<p><img src="https://i.loli.net/2021/09/03/zKC8jw1frBY4cI5.png" alt="fig4"></p>
+</li>
+<li><p>block reward</p>
+<p><img src="https://i.loli.net/2021/09/03/QHUyREn8sNdoFL6.png" alt="fig5"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="Insights"><a href="#Insights" class="headerlink" title="Insights"></a>Insights</h1><ul>
+<li>idea, writing, paper structure<ul>
+<li>Not an algorithm or system paper. They define some notions, and do theoretic study and experiments.</li>
+<li>Rather than a db paper, more like statistics.</li>
+</ul>
+</li>
+<li>problem, definition<ul>
+<li>Expectation fairness<ul>
+<li>$E[\lambda_A]=a$, it’s a binary notion, whether fair or not. It’s enough for the incentive mechanism study with no specific attack, but  when it comes to some attack causing unfairness, we need to measure how unfair it is.</li>
+</ul>
+</li>
+<li>Robust fairness<ul>
+<li>$(\epsilon, \delta)$-fairness: $Pr[|\lambda_A-\mu|&lt;\epsilon]\geq1-\delta$<ul>
+<li>confidence region, good point.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>approach<ul>
+<li>Martingale</li>
+<li>Stochastic Approximation</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>p.s. I render math equations under next theme with kramed and mathjax, refering to links below:</p>
+<p>[1] <a target="_blank" rel="noopener" href="https://ranmaosong.github.io/2017/11/29/hexo-support-mathjax/">如何在 hexo 中支持 Mathjax？</a></p>
+<p>[2] <a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next/blob/master/docs/MATH.md">Math Equations</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>If it helps, you may buy me a cup of coffee plz.</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Virgil Sun WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Virgil Sun Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Virgil</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="https://www.virgilsun.com/Notes%20on%20Do%20the%20Rich%20Get%20Richer%20Fairness%20Analysis%20for%20%20Blockchain%20Incentives/" title="Notes on Do the Rich Get Richer? Fairness Analysis for Blockchain Incentives">https://www.virgilsun.com/Notes%20on%20Do%20the%20Rich%20Get%20Richer%20Fairness%20Analysis%20for%20%20Blockchain%20Incentives/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Blockchain/" rel="tag"># Blockchain</a>
+          
+            <a href="/tags/Paper/" rel="tag"># Paper</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+              <div id="needsharebutton-postbottom">
+                <span class="btn">
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </span>
+              </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/%E9%87%91%E8%9E%8D%E6%96%87%E6%9C%AC%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96/" rel="next" title="金融文本信息抽取">
+                <i class="fa fa-chevron-left"></i> 金融文本信息抽取
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Data%20Storage%20in%20BTC/" rel="prev" title="Data Storage in BTC">
+                Data Storage in BTC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+        <div id="lv-container" data-id="city" data-uid="MTAyMC80MzU0NS8yMDA4NA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://i.loli.net/2019/04/02/5ca34b140d93c.jpg"
+                alt="Virgil Sun"/>
+            
+              <p class="site-author-name" itemprop="name">Virgil Sun</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">categories</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="https://github.com/SwJay" title="GitHub &rarr; https://github.com/SwJay" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span><br/>
+                  
+                    
+                  
+                  <a href="mailto:virgilsun@outlook.com" title="Mail &rarr; mailto:virgilsun@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="https://www.weibo.com/u/1960293815" title="微博 &rarr; https://www.weibo.com/u/1960293815" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="/atom.xml" title="RSS &rarr; /atom.xml"><i class="fa fa-fw fa-fas fa-rss"></i>RSS</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.drg1998.cn/" title="https://blog.drg1998.cn/" rel="noopener" target="_blank">Guo Shuai</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Original-Paper"><span class="nav-number">1.</span> <span class="nav-text">Original Paper</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Introduction"><span class="nav-number">1.2.</span> <span class="nav-text">1 Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Incentive-Models-of-Blockchains"><span class="nav-number">1.3.</span> <span class="nav-text">2 Incentive Models of Blockchains</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Expectational-Fairness"><span class="nav-number">1.4.</span> <span class="nav-text">3 Expectational Fairness</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Robust-Fairness"><span class="nav-number">1.5.</span> <span class="nav-text">4 Robust Fairness</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Experimental-Evaluation"><span class="nav-number">1.6.</span> <span class="nav-text">5 Experimental Evaluation</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Insights"><span class="nav-number">2.</span> <span class="nav-text">Insights</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Virgil Sun</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      已有
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次到访 w
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="//cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/jquery_lazyload@1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.2.1/velocity.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3.0.0/dist/js/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: 'Notes on Do the Rich Get Richer Fairness Analysis for  Blockchain Incentives/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+    
+  
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      document.getElementById(all[i].inputID + '-Frame').parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+    
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+  
+  
+    
+  
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+    
+      pbOptions = {};
+      
+        pbOptions.iconStyle = "box";
+      
+        pbOptions.boxForm = "horizontal";
+      
+        pbOptions.position = "bottomCenter";
+      
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</body>
+</html>

@@ -1,0 +1,1794 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.css"/>
+
+
+
+  
+  
+    
+      
+    
+    
+      
+    
+  <script src="//cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/pace-js@1.0.2/themes/blue/pace-theme-minimal.css"/>
+
+
+
+
+
+  <meta http-equiv="Cache-Control" content="no-transform"/>
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+
+
+
+  <meta name="google-site-verification" content="true"/>
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="vh3BWN1atu" />
+
+
+
+  
+  
+    
+  
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/fancybox@3.0.0/dist/css/jquery.fancybox.min.css"/>
+
+
+
+
+
+
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css"/>
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1"/>
+
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=7.0.1">
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Muse',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: true,
+    fastclick: true,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":false,"async":true,"transition":{"post_block":"fadeIn","post_header":"fadeIn","post_body":"fadeIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+<script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//st.flyhigher.top/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '2']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+
+  <meta name="description" content="数据预处理 — 将文件转化为 csv 格式此次实验有 3 个数据文件：company_node.txt, management_edge.txt 以及 person_node.txt。这些文件并不是标准的 csv 格式，而是以 \t 为分隔符，所以预处理的主要目的就是把文件转换为以 , 为分隔符的 csv 文件。另外对于文件中出现的字符串，我们在其两端加上引号。用 R 处理的代码如下： 12345">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知识图谱存储与可视化">
+<meta property="og:url" content="https://www.virgilsun.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%AD%98%E5%82%A8%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96/index.html">
+<meta property="og:site_name" content="Sun&#39;s Blog">
+<meta property="og:description" content="数据预处理 — 将文件转化为 csv 格式此次实验有 3 个数据文件：company_node.txt, management_edge.txt 以及 person_node.txt。这些文件并不是标准的 csv 格式，而是以 \t 为分隔符，所以预处理的主要目的就是把文件转换为以 , 为分隔符的 csv 文件。另外对于文件中出现的字符串，我们在其两端加上引号。用 R 处理的代码如下： 12345">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb999927f3cc.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb999ada4282.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb999bdd9dfc.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb999d619e0e.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb999faa4eff.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb99a1425066.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb99a25567f4.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb99a38d243e.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb99a38e2db5.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb99a9376263.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb99a935d2c2.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb99a93b96f2.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb99a93c29a2.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/19/5cb99a93cbbc7.png">
+<meta property="article:published_time" content="2019-04-19T09:42:16.000Z">
+<meta property="article:modified_time" content="2021-11-30T02:31:19.862Z">
+<meta property="article:author" content="Virgil Sun">
+<meta property="article:tag" content="Neo4j">
+<meta property="article:tag" content="Express">
+<meta property="article:tag" content="Nodejs">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2019/04/19/5cb999927f3cc.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Sun's Blog" type="application/atom+xml"/>
+
+
+
+  
+  
+  <link rel="canonical" href="https://www.virgilsun.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%AD%98%E5%82%A8%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>知识图谱存储与可视化 | Sun's Blog</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db5a55d89cc89dd77ff08de18d30e45f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sun's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">Goose had left marks.</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>Tags<span class="badge">22</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>Categories<span class="badge">3</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>Archives<span class="badge">14</span></a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-13/36">
+
+    
+    
+    
+      
+    
+
+    
+      
+    
+
+    <a href="/sentence" rel="section"><i class="menu-item-icon fa fa-fw fa-align-left"></i> <br/>13/36</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br/>Search</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/SwJay" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.virgilsun.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%AD%98%E5%82%A8%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Virgil Sun"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="https://i.loli.net/2019/04/02/5ca34b140d93c.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sun's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">知识图谱存储与可视化
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-04-19 17:42:16" itemprop="dateCreated datePublished" datetime="2019-04-19T17:42:16+08:00">2019-04-19</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2021-11-30 10:31:19" itemprop="dateModified" datetime="2021-11-30T10:31:19+08:00">2021-11-30</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Bigdata/" itemprop="url" rel="index"><span itemprop="name">Bigdata</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%AD%98%E5%82%A8%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96/" class="leancloud_visitors" data-flag-title="知识图谱存储与可视化">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Views: </span>
+              
+                
+                  
+                    
+                  
+                
+            </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="数据预处理-—-将文件转化为-csv-格式"><a href="#数据预处理-—-将文件转化为-csv-格式" class="headerlink" title="数据预处理 — 将文件转化为 csv 格式"></a>数据预处理 — 将文件转化为 csv 格式</h1><p>此次实验有 3 个数据文件：<code>company_node.txt</code>, <code>management_edge.txt</code> 以及 <code>person_node.txt</code>。这些文件并不是标准的 csv 格式，而是以 <code>\t</code> 为分隔符，所以预处理的主要目的就是把文件转换为以 <code>,</code> 为分隔符的 csv 文件。另外对于文件中出现的字符串，我们在其两端加上引号。用 R 处理的代码如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">library(tidyverse)</span><br><span class="line">company_node &lt;- read_delim(&quot;src/company_node.txt&quot;, &quot;\t&quot;, escape_double = FALSE, trim_ws = TRUE)</span><br><span class="line">write.csv(company_node, &quot;csv/company_node.csv&quot;, fileEncoding = &quot;UTF-8&quot;, row.names = FALSE)</span><br><span class="line">person_node &lt;- read_delim(&quot;src/person_node.txt&quot;, &quot;\t&quot;, escape_double = FALSE, trim_ws = TRUE)</span><br><span class="line">write.csv(person_node, &quot;csv/person_node.csv&quot;, fileEncoding = &quot;UTF-8&quot;, row.names = FALSE)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>节点数据的处理没有太大问题，但在处理关系数据时，我们发现读入的数据在 <code>:END_ID</code> 与 <code>update_time</code> 两列之前存在某些交错，如下图的第 15 行所示。并且，这还导致了数据读入的时候多了一列。</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb999927f3cc.png" alt="management_edge"></p>
+<p>所以我们需要对于这些交错的行进行修正。这只需对 <code>update_time</code> 进行字符串匹配，并对匹配到的行进行交换即可。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">management_edge &lt;- read_delim(&quot;src/management_edge.txt&quot;, &quot;\t&quot;, escape_double = FALSE, trim_ws = TRUE)</span><br><span class="line">for (i in 1:nrow(management_edge)) &#123;</span><br><span class="line">  if(str_detect(management_edge$update_time[i], &quot;pers&quot;)) &#123;</span><br><span class="line">    tmp &lt;- management_edge$`:END_ID`[i]</span><br><span class="line">    management_edge$`:END_ID`[i] &lt;- management_edge$update_time[i]</span><br><span class="line">    management_edge$update_time[i] &lt;- tmp</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">management_edge &lt;- select(management_edge, -X7)</span><br><span class="line">write.csv(management_edge, &quot;csv/management_edge.csv&quot;, fileEncoding = &quot;UTF-8&quot;, row.names = FALSE)</span><br></pre></td></tr></table></figure>
+<p>最后我们得到的数据文件格式如下：</p>
+<p><strong>company_node.csv</strong></p>
+<p><img src="https://i.loli.net/2019/04/19/5cb999ada4282.png" alt="clean1"></p>
+<p><strong>person_node.csv</strong></p>
+<p><img src="https://i.loli.net/2019/04/19/5cb999bdd9dfc.png" alt="clean2"></p>
+<p><strong>management_edge.csv</strong></p>
+<p><img src="https://i.loli.net/2019/04/19/5cb999d619e0e.png" alt="clean3"></p>
+<hr>
+<h1 id="将数据导入-neo4j"><a href="#将数据导入-neo4j" class="headerlink" title="将数据导入 neo4j"></a>将数据导入 neo4j</h1><p>将数据转换成 csv 格式之后，导入到 neo4j 就比较简单了。这次实验数据文件并不大，我们也只是在本地环境 (Windows) 使用 neo4j。</p>
+<h2 id="neo4j-安装"><a href="#neo4j-安装" class="headerlink" title="neo4j 安装"></a>neo4j 安装</h2><p>首先从 neo4j 官网下载二进制压缩包 <code>neo4j-community-3.5.4-windows.zip</code>，然后解压到 <code>D:\ProgramData\neo4j-community-3.5.4</code>。之后配置环境变量：</p>
+<p><code>NEO4J_HOME</code>: <code>D:\ProgramData\neo4j-community-3.5.4</code></p>
+<p><code>Path</code> (追加): <code>%NEO4J_HOME%\bin</code></p>
+<p>然后就可以从命令行启动 neo4j，启动命令为 <code>neo4j server</code>。</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb999faa4eff.png" alt="console"></p>
+<h2 id="导入数据"><a href="#导入数据" class="headerlink" title="导入数据"></a>导入数据</h2><p>在运行上述命令之后，就可以访问网页端 <code>http://localhost:7474/</code>。首次登陆需要修改密码，之后便可以正常使用。我们使用 <code>LOAD CSV</code> 方法导入数据，选择这个方法的原因一是由于这次数据量并不算大，不用在导入速率上做过多考虑；二是使用这种方法并不需要像其他很多方法一样需要在 neo4j 关闭服务时才能导入。为了导入数据，需要将预处理之后的 csv 文件放在 <code>NEO4J_HOME\import</code> 文件夹下，然后在网页端的命令交互环境执行下述 cypher 语句：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">USING PERIODIC COMMIT 300</span><br><span class="line">LOAD CSV WITH HEADERS FROM &#x27;file:///company_node.csv&#x27; AS line</span><br><span class="line">CREATE (:Company &#123; </span><br><span class="line">	ID: line.`:ID`, </span><br><span class="line">	create_time: line.create_time,</span><br><span class="line">	update_time: line.update_time,</span><br><span class="line">	industry: line.industry,</span><br><span class="line">	first_register_addr: line.first_register_addr,</span><br><span class="line">	security_short_name: line.security_short_name,</span><br><span class="line">	legal_entity: line.legal_entity,</span><br><span class="line">	manager: line.manager,</span><br><span class="line">	code: line.code,</span><br><span class="line">	company_address: line.company_address,</span><br><span class="line">	register_number: line.register_number,</span><br><span class="line">	zipcode: line.zipcode,</span><br><span class="line">	company_name: line.company_name</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>上面的语句导入了公司节点，为验证成功导入，使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MATCH (c:Company) RETURN c</span><br></pre></td></tr></table></figure>
+<p>结果如图，这表明导入成功。</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb99a1425066.png" alt="import1"></p>
+<p>此外可以为这些数据创建索引：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE INDEX ON :Company(ID)</span><br></pre></td></tr></table></figure>
+<p>同样的方法导入个人节点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">USING PERIODIC COMMIT 300</span><br><span class="line">LOAD CSV WITH HEADERS FROM &#x27;file:///person_node.csv&#x27; AS line</span><br><span class="line">CREATE (:Person &#123; </span><br><span class="line">	ID: line.ID, </span><br><span class="line">	education: line.education,</span><br><span class="line">	brith: line.brith,</span><br><span class="line">	name: line.name,</span><br><span class="line">	sex: line.sex,</span><br><span class="line">	create_time: line.create_datetime,</span><br><span class="line">	update_time: line.update_datetime</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>以及创建索引：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CREATE INDEX ON :Person(ID)</span><br></pre></td></tr></table></figure>
+<p>之后是关系数据的导入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">USING PERIODIC COMMIT 300</span><br><span class="line">LOAD CSV WITH HEADERS FROM &#x27;file:///management_edge.csv&#x27; AS line</span><br><span class="line">MATCH (c:Company &#123;ID: line.`:START_ID`&#125;), (p:Person &#123;ID: line.`:END_ID`&#125;)</span><br><span class="line">CREATE (c)-[:isManagedBy &#123;</span><br><span class="line">	create_time: line.create_time,</span><br><span class="line">	update_time: line.update_time,</span><br><span class="line">	title: line.title</span><br><span class="line">&#125;]-&gt;(p)</span><br></pre></td></tr></table></figure>
+<p>为了检验导入的效果，我们使用以下查询：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MATCH (c:Company)-[:isManagedBy]-&gt;(p:Person) RETURN c,p</span><br></pre></td></tr></table></figure>
+<p>得到的结果如下所示，这表明数据读取成功。</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb99a25567f4.png" alt="import1"></p>
+<h2 id="导出-json"><a href="#导出-json" class="headerlink" title="导出 json"></a>导出 json</h2><p>为方便测试，我们还将 neo4j 中的数据导出成 json 格式，用到的是 apoc 工具。为使用这个工具，需要从 <code>https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/3.5.0.2</code> 中下载最新版本的的 jar 包，然后将其放在 <code>NEO4J_HOME\plugins</code> 文件夹下，并修改 <code>NEO4J_HOME\conf\neo4j.conf</code> 文件，添加如下两行：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dbms.security.procedures.unrestricted=apoc.trigger.*,apoc.meta.*</span><br><span class="line">apoc.export.file.enabled=true</span><br></pre></td></tr></table></figure>
+<p>重启 neo4j，运行下述 cypher 语句，就可以在相应的路径下看到导出的文件。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">CALL apoc.graph.fromDB(&#x27;test&#x27;,&#123;&#125;) yield graph</span><br><span class="line">CALL apoc.export.json.graph(graph, &quot;D:/ProgramData/neo4j-community-3.5.4/export/query.json&quot;, &#123;&#125;)</span><br><span class="line">YIELD nodes, relationships, properties, file, source,format, time</span><br><span class="line">RETURN *</span><br></pre></td></tr></table></figure>
+<p>这个语句以 json 格式导出了所有的节点和关系，如下所示：</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb99a38d243e.png" alt="json1"></p>
+<p><img src="https://i.loli.net/2019/04/19/5cb99a38e2db5.png" alt="json2"></p>
+<hr>
+<h1 id="Node-js-Express框架链接前端与Neo4j"><a href="#Node-js-Express框架链接前端与Neo4j" class="headerlink" title="Node.js Express框架链接前端与Neo4j"></a>Node.js Express框架链接前端与Neo4j</h1><h2 id="基本准备"><a href="#基本准备" class="headerlink" title="基本准备"></a>基本准备</h2><h3 id="Node-js安装"><a href="#Node-js安装" class="headerlink" title="Node.js安装"></a>Node.js安装</h3><p><img src="https://i.loli.net/2019/04/19/5cb99a9376263.png" alt="00"></p>
+<p>官网下载并安装，基本操作。</p>
+<p>下载后自带<code>npm</code>，不需要再单独下载。环境变量在安装时已经被自动添加进路径中。</p>
+<p><img src="https://i.loli.net/2019/04/19/5cb99a935d2c2.png" alt="01"></p>
+<h3 id="Express安装"><a href="#Express安装" class="headerlink" title="Express安装"></a>Express安装</h3><p>命令行直接输入命令安装</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install express -g</span><br><span class="line">npm install express-generator -g</span><br></pre></td></tr></table></figure>
+<h3 id="Express项目创建"><a href="#Express项目创建" class="headerlink" title="Express项目创建"></a>Express项目创建</h3><p>在当前工作目录建立项目（比如我是在用户目录下）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">express -e neo4j_d3js</span><br><span class="line">cd neo4j_d3js</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>-e表示ejs模板引擎，不写的话默认创建jade模板引擎。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm start</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>一开始按照教程使用<code>node app</code>完全没反应，后来添加了<code>app.listen(3000)</code>又提示被占用。于是查找后，发现使用上述命令不能添加监听端口。于是选择上述命令。</p>
+</blockquote>
+<p>直接启动<a href="http://localhost:3000即可看见自己的网页。">http://localhost:3000即可看见自己的网页。</a></p>
+<p>为了让express也能识别<code>html</code>视图文件，需要：</p>
+<p>在app.js文件中，找到</p>
+<blockquote>
+<p>app.set(‘view engine’, ‘ejs’);</p>
+</blockquote>
+<p>把它替换成：</p>
+<blockquote>
+<p>app.set(‘view engine’, ‘html’);</p>
+</blockquote>
+<p>再用app.engine()方法注册模板引擎的后缀名。</p>
+<blockquote>
+<p>app.engine(‘html’, require(‘ejs’).__express);</p>
+</blockquote>
+<p>在<code>view</code>文件夹下本身有一个<code>index.ejs</code>文件，改后缀名为<code>.html</code>即可，注意，<code>error.ejs</code>也必须修改后缀名。</p>
+<p>另外，在<code>routes</code>文件夹下有<code>index.js</code>文件，就用于路由设置的文件，直接在里面修改即可。</p>
+<p>为了连接neo4j，还必须安装依赖包才能使用接口。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install node-neo4j —save</span><br></pre></td></tr></table></figure>
+<p>至此，所有外界安装就绪，接下来就是纯写代码工作了。</p>
+<hr>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><h3 id="环境创建与数据库链接"><a href="#环境创建与数据库链接" class="headerlink" title="环境创建与数据库链接"></a>环境创建与数据库链接</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> router = express.Router();</span><br><span class="line"><span class="keyword">var</span> neo4j = <span class="built_in">require</span>(<span class="string">&#x27;node-neo4j&#x27;</span>);</span><br><span class="line"></span><br><span class="line">db = <span class="keyword">new</span> neo4j(<span class="string">&#x27;http://neo4j:123456@localhost:7474&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处首先引入了<code>express</code>环境，并且创建了一个路由<code>router</code>，路由主要用于监听和定位不同的发送请求，相当于创建了类似虚拟文件夹的概念，不同的请求会发送到约定的路径中，由路由监听并作出相应反馈。</p>
+</blockquote>
+<h3 id="根目录设定与渲染"><a href="#根目录设定与渲染" class="headerlink" title="根目录设定与渲染"></a>根目录设定与渲染</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">router.get(<span class="string">&#x27;/&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  res.render(<span class="string">&#x27;index&#x27;</span>, &#123; <span class="attr">title</span>: <span class="string">&#x27;Express&#x27;</span> &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这是该文件创建时自带的语句。经过尝试，发现这个语句用于根目录的创建与渲染。因为当我删除这句话时，浏览器的日志会报错提示某些未定义的元素。之后又查阅了<code>res.render</code>用法——<code>渲染一个view，同时向callback传递渲染后的字符串，如果在渲染过程中有错误发生next(err)将会被自动调用。callback将会被传入一个可能发生的错误以及渲染后的页面，这样就不会自动输出了。</code>因此这个函数是必不可少的。</p>
+</blockquote>
+<h3 id="初始化节点处理"><a href="#初始化节点处理" class="headerlink" title="初始化节点处理"></a>初始化节点处理</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">router.get(<span class="string">&#x27;/getInitialNode&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> randomPoint = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">3761</span>);</span><br><span class="line">	<span class="keyword">var</span> sql_node = <span class="string">&quot;MATCH(n) WHERE id(n) = &quot;</span>+randomPoint+<span class="string">&quot; RETURN n&quot;</span>;</span><br><span class="line">	db.cypherQuery(sql_node, <span class="function"><span class="keyword">function</span> (<span class="params">err, result</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (err)&#123;</span><br><span class="line">            <span class="keyword">throw</span> err;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(result.data);</span><br><span class="line">        res.send(<span class="built_in">JSON</span>.stringify(result));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处路径与前端匹配。首先是利用JS自带的随机数函数生成0-1的随机数，3761代表我们处理过后导入neo4j中所有公司与个体的总和，我们对这个结果取整，用于初始点的选取。</p>
+<p>之后是对neo4j查询语句，取出id标识匹配的数据并通过<code>res.send</code>函数返回相应的<code>JSON</code>字符串至前端。</p>
+</blockquote>
+<h3 id="邻居节点扩展"><a href="#邻居节点扩展" class="headerlink" title="邻居节点扩展"></a>邻居节点扩展</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">router.get(<span class="string">&#x27;/spanNodes/*&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> sql_node = <span class="string">&quot;MATCH (n) -[r]-&gt; (p) WHERE id(n) = &quot;</span>+req.params[<span class="number">0</span>]+<span class="string">&quot; RETURN r,p&quot;</span>;</span><br><span class="line">	db.cypherQuery(sql_node, <span class="function"><span class="keyword">function</span> (<span class="params">err, result</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (err)&#123;</span><br><span class="line">            <span class="keyword">throw</span> err;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">console</span>.log(result.data);</span><br><span class="line">        res.send(<span class="built_in">JSON</span>.stringify(result));</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处很关键的处理在于路径的匹配，网上教程无一例外均提到利用正则表达式实现参数的传递，相当于在某个路径下匹配所有字符串，而这个字符串就自动识别为<code>req.params</code>。不过这里也只实现了一个参数，多参数传递没有细看。在前端，这里的参数是需要扩展邻居的结点<code>_id</code>值，直接用于查询语句，最终得到该节点所有的关系和邻居，同样方法返回。</p>
+</blockquote>
+<hr>
+<h1 id="Html与D3前端实现"><a href="#Html与D3前端实现" class="headerlink" title="Html与D3前端实现"></a>Html与D3前端实现</h1><h2 id="SVG与力导向图"><a href="#SVG与力导向图" class="headerlink" title="SVG与力导向图"></a>SVG与力导向图</h2><h3 id="SVG基本参数设定"><a href="#SVG基本参数设定" class="headerlink" title="SVG基本参数设定"></a>SVG基本参数设定</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> marge = &#123;<span class="attr">top</span>:<span class="number">60</span>,<span class="attr">bottom</span>:<span class="number">60</span>,<span class="attr">left</span>:<span class="number">60</span>,<span class="attr">right</span>:<span class="number">60</span>&#125;</span><br><span class="line"><span class="keyword">var</span> svg = d3.select(<span class="string">&quot;svg&quot;</span>)</span><br><span class="line"><span class="keyword">var</span> width = svg.attr(<span class="string">&quot;width&quot;</span>)</span><br><span class="line"><span class="keyword">var</span> height = svg.attr(<span class="string">&quot;height&quot;</span>)</span><br><span class="line"><span class="keyword">var</span> g = svg.append(<span class="string">&quot;g&quot;</span>)</span><br><span class="line">    	   .attr(<span class="string">&quot;transform&quot;</span>,<span class="string">&quot;translate(&quot;</span>+marge.top+<span class="string">&quot;,&quot;</span>+marge.left+<span class="string">&quot;)&quot;</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>marge</code>表示画布边框距离；<code>width</code>和<code>height</code>为当前画图作用范围的长与宽；<code>g</code>标签为SVG分组标签；设定<code>transform</code>属性为顶端与左侧留出间距。</p>
+</blockquote>
+<h3 id="力导向图布局"><a href="#力导向图布局" class="headerlink" title="力导向图布局"></a>力导向图布局</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> forceSimulation = d3.forceSimulation()</span><br><span class="line">    		            .force(<span class="string">&quot;link&quot;</span>,d3.forceLink().id(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123;</span><br><span class="line">    		                    	<span class="keyword">return</span> d._id;</span><br><span class="line">    		                    &#125;))</span><br><span class="line">    		            .force(<span class="string">&quot;charge&quot;</span>,d3.forceManyBody())</span><br><span class="line">    		            .force(<span class="string">&quot;center&quot;</span>,d3.forceCenter());</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处为新建力导向图，这是所有教程都会有的标准创建用法。但是在这里我在对<code>link</code>初始化方法时，将默认的<code>source</code>与<code>target</code>为自动分配的index改为了我从数据库读出来带有的<code>_id</code>属性，当然这也是可以唯一区分节点的。否则直接使用会报错提示某些未定义元素的出现。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">forceSimulation.nodes(nodes).on(<span class="string">&quot;tick&quot;</span>,ticked);</span><br><span class="line">forceSimulation.force(<span class="string">&quot;link&quot;</span>).links(edges)</span><br><span class="line">                  .distance(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> <span class="number">200</span>;&#125;);</span><br><span class="line">forceSimulation.force(<span class="string">&quot;center&quot;</span>).x(width/<span class="number">2</span>).y(height/<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>第一行表示将<code>nodes</code>数组中的节点提取出来，赋给相应的索引、坐标和物理变量，用于定位与能量计算，同时每过一个时钟<code>tick</code>就刷新一次节点的各项数据。</p>
+<p>第二行表示将<code>edges</code>数组中的边（关系）提取出来，此处设定了边的长度为一个固定值。</p>
+<p>第三行表示设定力导向图的中心位于整个画图范围的中间部位。</p>
+</blockquote>
+<h3 id="绘制"><a href="#绘制" class="headerlink" title="绘制"></a>绘制</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> links = g.append(<span class="string">&quot;g&quot;</span>)</span><br><span class="line">	         .selectAll(<span class="string">&quot;line&quot;</span>)</span><br><span class="line">	         .data(edges)</span><br><span class="line">	         .enter()</span><br><span class="line">	         .append(<span class="string">&quot;line&quot;</span>)</span><br><span class="line">	         .attr(<span class="string">&quot;stroke&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d,i</span>)</span>&#123;</span><br><span class="line">                   <span class="keyword">return</span> colorScale(i);</span><br><span class="line">                &#125;)</span><br><span class="line">	         .attr(<span class="string">&quot;stroke-width&quot;</span>,<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于是初次画图，因此新增<code>line</code>分组，把边导入数据，此时明显只有数据没有元素，需要使用<code>enter()</code>为新进入的数据分配元素（标签），并且赋予颜色与线宽。颜色来源见后续部分。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> linksText = g.append(<span class="string">&quot;g&quot;</span>)</span><br><span class="line">	             .selectAll(<span class="string">&quot;text&quot;</span>)</span><br><span class="line">	             .data(edges)</span><br><span class="line">	             .enter()</span><br><span class="line">	             .append(<span class="string">&quot;text&quot;</span>)</span><br><span class="line">	             .text(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">		             <span class="keyword">return</span> d.title;</span><br><span class="line">	             &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处新建<code>text</code>标签，描述线上文字显示，即关系显示。从neo4j读出来的关系中<code>title</code>表示原数据中的职位。</p>
+</blockquote>
+<hr>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gs = g.selectAll(<span class="string">&quot;.circleText&quot;</span>)</span><br><span class="line">	      .data(nodes)</span><br><span class="line">	      .enter()</span><br><span class="line">	      .append(<span class="string">&quot;g&quot;</span>)</span><br><span class="line">	      .attr(<span class="string">&quot;transform&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d,i</span>)</span>&#123;</span><br><span class="line">		     <span class="keyword">var</span> cirX = d.x;</span><br><span class="line">		     <span class="keyword">var</span> cirY = d.y;</span><br><span class="line">		     <span class="keyword">return</span> <span class="string">&quot;translate(&quot;</span>+cirX+<span class="string">&quot;,&quot;</span>+cirY+<span class="string">&quot;)&quot;</span>;</span><br><span class="line">	      &#125;)</span><br><span class="line">	      .call(d3.drag()</span><br><span class="line">		     .on(<span class="string">&quot;start&quot;</span>,started)</span><br><span class="line">		     .on(<span class="string">&quot;drag&quot;</span>,dragged)</span><br><span class="line">		     .on(<span class="string">&quot;end&quot;</span>,ended)</span><br><span class="line">	      );</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处为节点圆心的坐标和拖拽部分，这个在参考的教程中有提到，说圆心自身的坐标应当与圆半径、显示文字分开，具体理由不太能理解。</p>
+<p>此处有定义基本的拖拽行为，这也是标准用法，具体的三个函数见后续部分。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">gs.append(<span class="string">&quot;circle&quot;</span>)</span><br><span class="line">  .attr(<span class="string">&quot;r&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">  	<span class="keyword">if</span>(d.name == <span class="literal">undefined</span>)</span><br><span class="line">  		<span class="keyword">return</span> <span class="number">60</span>;</span><br><span class="line">  	<span class="keyword">else</span></span><br><span class="line">  		<span class="keyword">return</span> <span class="number">30</span>;</span><br><span class="line">  &#125;)</span><br><span class="line">  .attr(<span class="string">&quot;fill&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d,i</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> colorScale(i);</span><br><span class="line">  &#125;)</span><br><span class="line">  .on(<span class="string">&quot;dblclick&quot;</span>,spanNodes)</span><br><span class="line">     .on(<span class="string">&quot;mouseover&quot;</span>,showInfo)</span><br><span class="line">     .on(<span class="string">&quot;mouseout&quot;</span>,hideInfo);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这部分为圆的主体部分，我将公司与个体区分开来，公司半径会更大，利于直观区分。填充颜色与线条颜色填充方法相同。</p>
+<p>最后面的三个监听行为是前端的最核心部分，与express的交互和甲方需求都在这里实现。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gs.append(<span class="string">&quot;text&quot;</span>)</span><br><span class="line">  .attr(<span class="string">&quot;x&quot;</span>,-<span class="number">20</span>)</span><br><span class="line">  .attr(<span class="string">&quot;y&quot;</span>,<span class="number">0</span>)</span><br><span class="line">  .attr(<span class="string">&quot;dy&quot;</span>,<span class="number">0</span>)</span><br><span class="line">  .text(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">       <span class="keyword">if</span>(d.name == <span class="literal">undefined</span>)</span><br><span class="line">           <span class="keyword">return</span> d.security_short_name;</span><br><span class="line">       <span class="keyword">else</span></span><br><span class="line">           <span class="keyword">return</span> d.name;</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此部分为圆上文字显示，内容为人名或公司名，属性为设置文字的起始显示位置。</p>
+</blockquote>
+<hr>
+<h3 id="函数模块"><a href="#函数模块" class="headerlink" title="函数模块"></a>函数模块</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ticked</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	links</span><br><span class="line">		.attr(<span class="string">&quot;x1&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d.source.x;&#125;)</span><br><span class="line">		.attr(<span class="string">&quot;y1&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d.source.y;&#125;)</span><br><span class="line">		.attr(<span class="string">&quot;x2&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d.target.x;&#125;)</span><br><span class="line">		.attr(<span class="string">&quot;y2&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d.target.y;&#125;);</span><br><span class="line">	linksText</span><br><span class="line">		.attr(<span class="string">&quot;x&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> (d.source.x+d.target.x)/<span class="number">2</span>;</span><br><span class="line">	&#125;)</span><br><span class="line">	    .attr(<span class="string">&quot;y&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> (d.source.y+d.target.y)/<span class="number">2</span>;</span><br><span class="line">	&#125;);</span><br><span class="line">	gs</span><br><span class="line">		.attr(<span class="string">&quot;transform&quot;</span>,<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> <span class="string">&quot;translate(&quot;</span> + d.x + <span class="string">&quot;,&quot;</span> + d.y + <span class="string">&quot;)&quot;</span>; &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>ticked</code>函数按照教程说法，用于不断更新边、边上文字、圆心的具体几何属性，在保证了基本几何参数正确的情况下，更便于做其他的操作，可以完全独立于相对位置来完成代码逻辑。</p>
+</blockquote>
+<hr>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">started</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!d3.event.active)&#123;</span><br><span class="line">		forceSimulation.alphaTarget(<span class="number">0.8</span>).restart();</span><br><span class="line">	&#125;</span><br><span class="line">	d.fx = d.x;</span><br><span class="line">	d.fy = d.y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">dragged</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">	d.fx = d3.event.x;</span><br><span class="line">	d.fy = d3.event.y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ended</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(!d3.event.active)&#123;</span><br><span class="line">		forceSimulation.alphaTarget(<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	d.fx = <span class="literal">null</span>;</span><br><span class="line">	d.fy = <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这三个函数为拖拽函数的三个行为函数，这也是标准用法，直接复制教程。大体意思是，拖拽开始时，固定原始圆心坐标；过程中会不断更新固定坐标；最后结束时，不再固定坐标，而是能够根据力导向图自身的能量计算到达平衡状态。<code>fx = fixed x</code>。</p>
+</blockquote>
+<hr>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> colorScale = d3.scaleOrdinal()</span><br><span class="line">	               .domain(d3.range(nodes.length))</span><br><span class="line">	               .range(d3.schemeCategory10);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处为颜色模版使用，以节点数组长度为作用域分配10色模版，每添加一个新的元素便能够触发分配。经过试验，在没有新添加节点或边的情况下，只会分配一种颜色。</p>
+</blockquote>
+<hr>
+<h2 id="利用express交互实现功能"><a href="#利用express交互实现功能" class="headerlink" title="利用express交互实现功能"></a>利用express交互实现功能</h2><h3 id="初始化图形"><a href="#初始化图形" class="headerlink" title="初始化图形"></a>初始化图形</h3><p>&emsp;&emsp;此部分函数主要用于初始化画布，即随机选点与扩展邻居。同时会在双击行为时，满足一定条件时被调用，重新随机选取与扩展节点。因此，在逻辑部分，并不完全按照<strong>第一次</strong>随机选取实现，会有一些小处理。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">    <span class="attr">url</span>: <span class="string">&#x27;/getInitialNode&#x27;</span>,</span><br><span class="line">    <span class="attr">timeout</span>: <span class="number">3000</span>,</span><br><span class="line">    <span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">    <span class="attr">async</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(res);</span><br><span class="line">        data = res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处基本为教程标准用法，大体含义就是针对express路由发送请求。此处发送初始节点请求，最大等待时间3秒，数据类型为<code>json</code>，关闭异步功能，若成功返回，则赋值给我的<code>data</code>变量。</p>
+<p>其中最开始并没有增加关闭异步功能的语句，直到运行时一直出现如下错误</p>
+<p><code>SCRIPT5007: Unable to get property &#39;0&#39; of undefined or null reference</code></p>
+<p>但能够观察到data是有数据的，不存在找不到数组的情况。经过反复尝试，突然发现有的时候报错提示和控制台输出语句会交换顺序，于是怀疑可能是这二者是几乎同时执行的，经过一定的搜索和询问同学，最终解决了这个问题。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i;</span><br><span class="line"><span class="keyword">var</span> index = data.data[<span class="number">0</span>]._id;</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;nodes.length; i++)</span><br><span class="line">	<span class="keyword">if</span>(nodes[i]._id == index)</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line"><span class="keyword">if</span>(i == nodes.length)&#123;</span><br><span class="line">	nodes.push(data.data[<span class="number">0</span>]);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	initialGraph();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这部分逻辑用于判断随机选取的节点是否已经在画布中，如果存在不能反复添加，否则会出现两个相同的节点。此处如果节点已经存在必须递归调用此函数，直到找到未添加节点为止。这样写很不安全，一旦出现暴力攻击，将数据库节点使用完后，会无限循环调用函数，导致栈溢出。但此处是为了实验，也便于用户使用，才这样写的。否则必须增加节点数记录，判断是否已经用完节点。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">   	<span class="attr">url</span>: <span class="string">&#x27;/spanNodes/&#x27;</span> + index,</span><br><span class="line">   	<span class="attr">timeout</span>: <span class="number">3000</span>,</span><br><span class="line">   	<span class="attr">dataType</span>: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">   	<span class="attr">async</span>: <span class="literal">false</span>,</span><br><span class="line">   	<span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">res</span>) </span>&#123;</span><br><span class="line">       	<span class="built_in">console</span>.log(res);</span><br><span class="line">       	data = res;</span><br><span class="line">   	&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处类似初始节点过程，只不过这里传递了参数，<code>index</code>在上面定义，为选定节点的索引。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">data.data.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">neibor</span>)</span>&#123;</span><br><span class="line">	nodes.push(neibor[<span class="number">1</span>]);</span><br><span class="line">	<span class="keyword">var</span> link = neibor[<span class="number">0</span>];</span><br><span class="line">	link.source = index;</span><br><span class="line">	link.target = neibor[<span class="number">1</span>]._id;</span><br><span class="line">	edges.push(link);</span><br><span class="line">&#125;);</span><br><span class="line">restart();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处将返回的所有邻居遍历，由于此函数在前面的判断时，保证了选取的节点为新的节点，因此通过该节点生成的邻居也必然是新的，此处没必要判断边是否已经存在。数据存储好后，重新刷新画布。</p>
+</blockquote>
+<h3 id="扩展邻居"><a href="#扩展邻居" class="headerlink" title="扩展邻居"></a>扩展邻居</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">spanNodes</span>(<span class="params">d, index</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> indexM = d._id;</span><br><span class="line">    ...</span><br><span class="line">    $.ajax(&#123;</span><br><span class="line">        <span class="attr">url</span>: <span class="string">&#x27;/spanNodes/&#x27;</span> + indexM,</span><br><span class="line">...</span><br><span class="line">    <span class="keyword">var</span> update_num = <span class="number">0</span>;</span><br><span class="line">    data.data.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">neibor</span>)</span>&#123;</span><br><span class="line">    	<span class="keyword">var</span> i;</span><br><span class="line">    	<span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;nodes.length; i++)</span><br><span class="line">    		<span class="keyword">if</span>(nodes[i]._id == neibor[<span class="number">1</span>]._id)</span><br><span class="line">    			<span class="keyword">break</span>;</span><br><span class="line">    	<span class="keyword">if</span>(i == nodes.length)&#123;</span><br><span class="line">    		nodes.push(neibor[<span class="number">1</span>]);</span><br><span class="line">    		<span class="keyword">var</span> link = neibor[<span class="number">0</span>];</span><br><span class="line">    		link.source = indexM;</span><br><span class="line">    		link.target = neibor[<span class="number">1</span>]._id;</span><br><span class="line">    		edges.push(link);</span><br><span class="line">    		update_num = <span class="number">1</span>;</span><br><span class="line">    	&#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">if</span>(update_num == <span class="number">0</span>)</span><br><span class="line">    	initialGraph();</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    	restart();</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>变量<code>update_num</code>用于记录当前节点是否<strong>真的</strong>扩展了边，这有两种情况——该节点没有邻居和该节点已经被双击过了。无论是哪种，我们都不应该新添加边，并且需要调用<code>initialGraph()</code>函数重新随机生成节点和邻居，保证每次双击都有新的元素出现。另外，在添加边时，还要判断边地另一端节点是否已经出现在画布中，如果出现了，不能反复添加节点，只需要添加新的边即可。</p>
+</blockquote>
+<h3 id="信息显示"><a href="#信息显示" class="headerlink" title="信息显示"></a>信息显示</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">showInfo</span>(<span class="params">d, index</span>)</span>&#123;</span><br><span class="line">	old_color = d3.color(d3.select(<span class="built_in">this</span>).attr(<span class="string">&quot;fill&quot;</span>));</span><br><span class="line">	old_color.opacity = <span class="number">0.7</span></span><br><span class="line">	d3.select(<span class="built_in">this</span>).attr(<span class="string">&quot;fill&quot;</span>, old_color);</span><br><span class="line">	<span class="keyword">if</span>(d.name == <span class="literal">undefined</span>)&#123;</span><br><span class="line">		<span class="keyword">var</span> out = <span class="string">&quot;Company Name - &quot;</span>+d.company_name+<span class="string">&quot;\nManager - &quot;</span>+d.manager+<span class="string">&quot;\nIndustry - &quot;</span>+d.industry+<span class="string">&quot;\nCompany Address - &quot;</span>+d.company_address;</span><br><span class="line">		<span class="keyword">return</span> layout.style(<span class="string">&quot;visibility&quot;</span>,<span class="string">&quot;visible&quot;</span>).text(out);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">var</span> out = <span class="string">&quot;Name - &quot;</span>+d.name+<span class="string">&quot;\nEducation - &quot;</span>+d.education+<span class="string">&quot;\nSex - &quot;</span>+d.sex;</span><br><span class="line">		<span class="keyword">return</span> layout.style(<span class="string">&quot;visibility&quot;</span>,<span class="string">&quot;visible&quot;</span>).text(out);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>第一二三行行为：鼠标移动到节点上，节点会变透明，0.7为透明程度，1表示不透明。<code>old_color</code>记录原始颜色，便于鼠标移开后恢复原始颜色。</p>
+<p><code>layout</code>为实现设定的全局风格，作用域为所有<code>body</code>。<code>visible</code>表示将这部分文本显示出来。默认显示在浏览器画布的左下角。</p>
+</blockquote>
+<h3 id="信息隐藏"><a href="#信息隐藏" class="headerlink" title="信息隐藏"></a>信息隐藏</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">hideInfo</span>(<span class="params">d, index</span>)</span>&#123;</span><br><span class="line">	old_color.opacity = <span class="number">1</span>;</span><br><span class="line">	d3.select(<span class="built_in">this</span>).transition()</span><br><span class="line">		.duration(<span class="number">500</span>)</span><br><span class="line">		.attr(<span class="string">&quot;fill&quot;</span>, old_color);</span><br><span class="line"><span class="keyword">return</span> layout.style(<span class="string">&quot;visibility&quot;</span>,<span class="string">&quot;hidden&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此处将透明度复原，并且使用了延迟行为。<code>hidden</code>表示隐藏之前的文字。</p>
+</blockquote>
+<h3 id="刷新画布"><a href="#刷新画布" class="headerlink" title="刷新画布"></a>刷新画布</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">restart</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    links = links</span><br><span class="line">    			 ...</span><br><span class="line">       	 .merge(links);</span><br><span class="line">    ...</span><br><span class="line">    forceSimulation.restart();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这部分基本和第一次初始化时相同，只有一些小细节不同。比如已经定义过的变量只需要更新即可，不要反复定义；再比如上方展示的，原变量只需要对新数据操作后与原数据合并即可，此时不能添加新的分组标签；最后是默认的重启函数，此处可以设置<code>alpha</code>值，默认是1，我就没作修改了。</p>
+</blockquote>
+<hr>
+<h1 id="结果展示"><a href="#结果展示" class="headerlink" title="结果展示"></a>结果展示</h1><h2 id="鼠标在空白处"><a href="#鼠标在空白处" class="headerlink" title="鼠标在空白处"></a>鼠标在空白处</h2><p><img src="https://i.loli.net/2019/04/19/5cb99a93b96f2.png" alt="03"></p>
+<blockquote>
+<p>左下角什么都没有显示。</p>
+</blockquote>
+<hr>
+<h2 id="鼠标移至公司"><a href="#鼠标移至公司" class="headerlink" title="鼠标移至公司"></a>鼠标移至公司</h2><p><img src="https://i.loli.net/2019/04/19/5cb99a93c29a2.png" alt="02"></p>
+<blockquote>
+<p>圆变透明了，并且左下角出现信息。</p>
+</blockquote>
+<hr>
+<h2 id="双击扩展"><a href="#双击扩展" class="headerlink" title="双击扩展"></a>双击扩展</h2><p><img src="https://i.loli.net/2019/04/19/5cb99a93cbbc7.png" alt="04"></p>
+<blockquote>
+<p>双击后如果没有邻居或者邻居已经显示出来了，就随机创建新的节点。并且这里，个体也变透明了，左下角有相应信息。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>If it helps, you may buy me a cup of coffee plz.</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    Donate
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/wechatpay.jpg" alt="Virgil Sun WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/alipay.jpg" alt="Virgil Sun Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:  </strong>Junru Chen, Tsechin Lin</li>
+  <li class="post-copyright-link">
+    <strong>Post link: </strong>
+    
+    <a href="https://www.virgilsun.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%AD%98%E5%82%A8%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96/" title="知识图谱存储与可视化">https://www.virgilsun.com/%E7%9F%A5%E8%AF%86%E5%9B%BE%E8%B0%B1%E5%AD%98%E5%82%A8%E4%B8%8E%E5%8F%AF%E8%A7%86%E5%8C%96/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice:  </strong>All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/zh-CN" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> unless stating additionally.</li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Neo4j/" rel="tag"># Neo4j</a>
+          
+            <a href="/tags/Express/" rel="tag"># Express</a>
+          
+            <a href="/tags/Nodejs/" rel="tag"># Nodejs</a>
+          
+        </div>
+      
+
+      
+      
+        <div class="post-widgets">
+        
+
+        
+
+        
+          
+          <div class="social_share">
+            
+            
+              <div id="needsharebutton-postbottom">
+                <span class="btn">
+                  <i class="fa fa-share-alt" aria-hidden="true"></i>
+                </span>
+              </div>
+            
+            
+          </div>
+        
+        </div>
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/%E7%94%A8Sqoop%E8%BF%9B%E8%A1%8C%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%8EHadoop%E7%94%9F%E6%80%81%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E4%BB%8EMySQL%E5%88%B0HBase/" rel="next" title="用Sqoop进行关系型数据库与Hadoop生态的数据传输:从MySQL到HBase">
+                <i class="fa fa-chevron-left"></i> 用Sqoop进行关系型数据库与Hadoop生态的数据传输:从MySQL到HBase
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/%E9%87%91%E8%9E%8D%E6%96%87%E6%9C%AC%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96/" rel="prev" title="金融文本信息抽取">
+                金融文本信息抽取 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+        <div id="lv-container" data-id="city" data-uid="MTAyMC80MzU0NS8yMDA4NA=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://i.loli.net/2019/04/02/5ca34b140d93c.jpg"
+                alt="Virgil Sun"/>
+            
+              <p class="site-author-name" itemprop="name">Virgil Sun</p>
+              <div class="site-description motion-element" itemprop="description"></div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/%20%7C%7C%20archive">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">categories</span>
+                  
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">22</span>
+                    <span class="site-state-item-name">tags</span>
+                  
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="https://github.com/SwJay" title="GitHub &rarr; https://github.com/SwJay" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span><br/>
+                  
+                    
+                  
+                  <a href="mailto:virgilsun@outlook.com" title="Mail &rarr; mailto:virgilsun@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="https://www.weibo.com/u/1960293815" title="微博 &rarr; https://www.weibo.com/u/1960293815" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                </span>
+                  
+                    
+                  
+                  <a href="/atom.xml" title="RSS &rarr; /atom.xml"><i class="fa fa-fw fa-fas fa-rss"></i>RSS</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://blog.drg1998.cn/" title="https://blog.drg1998.cn/" rel="noopener" target="_blank">Guo Shuai</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86-%E2%80%94-%E5%B0%86%E6%96%87%E4%BB%B6%E8%BD%AC%E5%8C%96%E4%B8%BA-csv-%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">数据预处理 — 将文件转化为 csv 格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%86%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5-neo4j"><span class="nav-number">2.</span> <span class="nav-text">将数据导入 neo4j</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#neo4j-%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">neo4j 安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">2.2.</span> <span class="nav-text">导入数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA-json"><span class="nav-number">2.3.</span> <span class="nav-text">导出 json</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Node-js-Express%E6%A1%86%E6%9E%B6%E9%93%BE%E6%8E%A5%E5%89%8D%E7%AB%AF%E4%B8%8ENeo4j"><span class="nav-number">3.</span> <span class="nav-text">Node.js Express框架链接前端与Neo4j</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%87%86%E5%A4%87"><span class="nav-number">3.1.</span> <span class="nav-text">基本准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-js%E5%AE%89%E8%A3%85"><span class="nav-number">3.1.1.</span> <span class="nav-text">Node.js安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Express%E5%AE%89%E8%A3%85"><span class="nav-number">3.1.2.</span> <span class="nav-text">Express安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Express%E9%A1%B9%E7%9B%AE%E5%88%9B%E5%BB%BA"><span class="nav-number">3.1.3.</span> <span class="nav-text">Express项目创建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%88%9B%E5%BB%BA%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%BA%93%E9%93%BE%E6%8E%A5"><span class="nav-number">3.2.1.</span> <span class="nav-text">环境创建与数据库链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B9%E7%9B%AE%E5%BD%95%E8%AE%BE%E5%AE%9A%E4%B8%8E%E6%B8%B2%E6%9F%93"><span class="nav-number">3.2.2.</span> <span class="nav-text">根目录设定与渲染</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E8%8A%82%E7%82%B9%E5%A4%84%E7%90%86"><span class="nav-number">3.2.3.</span> <span class="nav-text">初始化节点处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%82%BB%E5%B1%85%E8%8A%82%E7%82%B9%E6%89%A9%E5%B1%95"><span class="nav-number">3.2.4.</span> <span class="nav-text">邻居节点扩展</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Html%E4%B8%8ED3%E5%89%8D%E7%AB%AF%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">Html与D3前端实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#SVG%E4%B8%8E%E5%8A%9B%E5%AF%BC%E5%90%91%E5%9B%BE"><span class="nav-number">4.1.</span> <span class="nav-text">SVG与力导向图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SVG%E5%9F%BA%E6%9C%AC%E5%8F%82%E6%95%B0%E8%AE%BE%E5%AE%9A"><span class="nav-number">4.1.1.</span> <span class="nav-text">SVG基本参数设定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9B%E5%AF%BC%E5%90%91%E5%9B%BE%E5%B8%83%E5%B1%80"><span class="nav-number">4.1.2.</span> <span class="nav-text">力导向图布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%98%E5%88%B6"><span class="nav-number">4.1.3.</span> <span class="nav-text">绘制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%A8%A1%E5%9D%97"><span class="nav-number">4.1.4.</span> <span class="nav-text">函数模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A9%E7%94%A8express%E4%BA%A4%E4%BA%92%E5%AE%9E%E7%8E%B0%E5%8A%9F%E8%83%BD"><span class="nav-number">4.2.</span> <span class="nav-text">利用express交互实现功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%9B%BE%E5%BD%A2"><span class="nav-number">4.2.1.</span> <span class="nav-text">初始化图形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E9%82%BB%E5%B1%85"><span class="nav-number">4.2.2.</span> <span class="nav-text">扩展邻居</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%98%BE%E7%A4%BA"><span class="nav-number">4.2.3.</span> <span class="nav-text">信息显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E9%9A%90%E8%97%8F"><span class="nav-number">4.2.4.</span> <span class="nav-text">信息隐藏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B7%E6%96%B0%E7%94%BB%E5%B8%83"><span class="nav-number">4.2.5.</span> <span class="nav-text">刷新画布</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA"><span class="nav-number">5.</span> <span class="nav-text">结果展示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BC%A0%E6%A0%87%E5%9C%A8%E7%A9%BA%E7%99%BD%E5%A4%84"><span class="nav-number">5.1.</span> <span class="nav-text">鼠标在空白处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BC%A0%E6%A0%87%E7%A7%BB%E8%87%B3%E5%85%AC%E5%8F%B8"><span class="nav-number">5.2.</span> <span class="nav-text">鼠标移至公司</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8C%E5%87%BB%E6%89%A9%E5%B1%95"><span class="nav-number">5.3.</span> <span class="nav-text">双击扩展</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2019 – <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Virgil Sun</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v5.4.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      已有
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次到访 w
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="//cdn.jsdelivr.net/npm/jquery@2.1.3/dist/jquery.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/jquery_lazyload@1.9.3/jquery.lazyload.min.js"></script>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.2.1/velocity.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/velocity-animate@1.2.1/velocity.ui.min.js"></script>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/fancybox@3.0.0/dist/js/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.0.1"></script>
+
+  <script src="/js/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.0.1"></script>
+<script src="/js/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '知识图谱存储与可视化/'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+    
+  
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+  
+
+  
+  
+  
+    
+  
+  <script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-needmoreshare2@1/needsharebutton.min.js"></script>
+  <script>
+    
+      pbOptions = {};
+      
+        pbOptions.iconStyle = "box";
+      
+        pbOptions.boxForm = "horizontal";
+      
+        pbOptions.position = "bottomCenter";
+      
+        pbOptions.networks = "Weibo,Wechat,Douban,QQZone,Twitter,Facebook";
+      
+      new needShareButton('#needsharebutton-postbottom', pbOptions);
+    
+    
+  </script>
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</body>
+</html>

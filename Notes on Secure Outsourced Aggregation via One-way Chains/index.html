@@ -143,8 +143,9 @@
 <meta property="og:description" content="[TOC] Motivation Scenario (unique characteristics): Wide-area shared sensing vs. typical wireless sensing aplication:  Diverse queries Push-based data collection: sensor push data to portal before que">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://s2.loli.net/2022/01/04/NhQocOvfZ1FMrXE.png">
+<meta property="og:image" content="https://s2.loli.net/2022/01/05/4R7bXtEDiMSJlaz.png">
 <meta property="article:published_time" content="2022-01-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-01-04T13:55:26.361Z">
+<meta property="article:modified_time" content="2022-01-05T13:24:37.666Z">
 <meta property="article:author" content="Virgil Sun">
 <meta property="article:tag" content="Aggregate">
 <meta property="article:tag" content="Outsourcing">
@@ -492,12 +493,24 @@
                 
               
 
-              <time title="Created: 2022-01-04 00:00:00 / Modified: 21:55:26" itemprop="dateCreated datePublished" datetime="2022-01-04T00:00:00+08:00">2022-01-04</time>
+              <time title="Created: 2022-01-04 00:00:00" itemprop="dateCreated datePublished" datetime="2022-01-04T00:00:00+08:00">2022-01-04</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2022-01-05 21:24:37" itemprop="dateModified" datetime="2022-01-05T21:24:37+08:00">2022-01-05</time>
               
             
           </span>
@@ -626,13 +639,19 @@
 <li>measures: sensor reading are restricted to positive integer…</li>
 </ul>
 </li>
+<li>Security<ul>
+<li>Let root aggregator include a list of failed sensors    。</li>
+<li>Preventing aggregator include properly functioning sensor in failed list is orthogonal to this work, assume the liest is empty, if not just exclude those sensors.</li>
+<li>:question: Excluding failed sensor is now tackled, what about filtering qualified sensor of predicates?</li>
+</ul>
+</li>
 <li>One-way chain<ul>
 <li>one-way function: easy to compute, computationally infeasible to revert (without knowing the trapdoor). Hash, or asymmetric encryption. They choose RSA encryption.</li>
 <li>Notation: $F^x()$ denote recursively applying the function $F$ for $x$ times, called the SEAL (SElf-Authenticating vaLue) at position $x$. Can be <em>rolled forward</em>, i.e. compute SEAL at later position $y&gt;x$.</li>
 </ul>
 </li>
 </ul>
-<h1 id="Secure-Max-aggregate"><a href="#Secure-Max-aggregate" class="headerlink" title="Secure Max aggregate"></a>Secure Max aggregate</h1><p>With $K_i$ the symmetric key shared by portal and sensor $i$, $v_i$ the reading on sensor $i$ at the current recent epoch.</p>
+<h1 id="Secure-Max-Aggregate"><a href="#Secure-Max-Aggregate" class="headerlink" title="Secure Max Aggregate"></a>Secure Max Aggregate</h1><p>With $K_i$ the symmetric key shared by portal and sensor $i$, $v_i$ the reading on sensor $i$ at the current recent epoch.</p>
 <ul>
 <li><p>Sensor $i$ reports to aggregator $\{v_i,s^+_i,F^{v_i}(s^-_i)\}$, where</p>
 <ul>
@@ -649,7 +668,10 @@
 <li>prevent deflation (report a smaller value)<ul>
 <li><img src="https://s2.loli.net/2022/01/04/NhQocOvfZ1FMrXE.png" alt="image.png"></li>
 <li>It can prevent aggregator to forge $F^2(s^-_2)$, since aggregator only knows $F^3(s^-_2)$ and can’t revert it one step ahead.</li>
-<li>:question:But can it prevent aggregator to throw away the true max value? Or does portal tackle this by checking the sensor list to ensure completeness?</li>
+<li>:white_check_mark:But can it prevent aggregator from not including the true max value?<ul>
+<li>Portal computes each $s^-_i$, i.e. it has the list of all qualified sensors.</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -660,13 +682,109 @@
 <p>computes all individual $s^-_i$’s and folds them together to create the RS of $\odot_i F^{v_m}(s^-_i)$</p>
 </blockquote>
 </li>
-<li><p>:question:How can portal compute all individual $s^-_i$?</p>
-</li>
+<li><p>:white_check_mark:How can portal compute all individual $s^-_i$?</p>
+<ul>
+<li>Because it’s just encrypted epoch number with different keys $s^-_i=\{\text{MAC}_{K_i}(epoch#)\}$.</li>
 </ul>
 </li>
 </ul>
-<p>TODO</p>
-
+</li>
+</ul>
+<p><strong>Therefore, it doesn’t handle completeness, just soundness from 2 aspects (inflation, deflation)</strong>.</p>
+<h1 id="Count-and-Related-Queries"><a href="#Count-and-Related-Queries" class="headerlink" title="Count and Related Queries"></a>Count and Related Queries</h1><h2 id="Basic-Protocols"><a href="#Basic-Protocols" class="headerlink" title="Basic Protocols"></a>Basic Protocols</h2><p><strong>Reduce Count to Max</strong></p>
+<ul>
+<li><p>AMS algorithm</p>
+<ul>
+<li>For each sensor $i$ whose reading satisfies predicates, pick a random positive integer $v_i$ with probability $2^{-v_i}$</li>
+<li>Use max protocol to compute $v_m$, estimate the count as $2^{v_m}$.</li>
+<li>Require pseudo-random number generator to verify sensor’s random number.</li>
+<li>Proof<ul>
+<li>pdf for random number generation: $f(x)=2^{-x}$. Note that $x\in \mathcal{Z}^+$, discrete.</li>
+<li>TODO</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Other approximating algorithms</p>
+<ul>
+<li><p>Let the random number generation ~ $U(0,1)$, estimate the count to be $1/(1-v_m)$.</p>
+</li>
+<li><p>Proof</p>
+<ul>
+<li><p>pdf of $X_i$: $f(x)=\frac{1}{b-a}=1$, cdf of $X_i$: $F(x)=\frac{x}{b-a}=x$</p>
+</li>
+<li><p>distribution of $Y=\max\{X_1,\ldots,X_n\}$:</p>
+<script type="math/tex; mode=display">
+\begin{align}
+F_Y(y) &= Pr(\max\{X_1,\ldots,X_n\}\le y) = Pr(X_1\le y,\ldots,X_n\le y)\\
+&= Pr(X_1 \le y)\ldots Pr(X_n \le y) = F_X(y)^n = y^n\\
+f_Y(y) &= F_Y'(y)=ny^{n-1}
+\end{align}</script></li>
+<li><p>Expectation of $Y$:</p>
+<script type="math/tex; mode=display">
+\begin{align}
+E(Y) &= \int_0^1 y\cdot f_Y(y)dy = \int_0^1 ny^n dy = \frac{n}{n+1}
+\end{align}</script></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>FM sketch</p>
+<ul>
+<li>each sensor generate 1 bit at index $x$ with probability $2^x$ ( ~ Geometric distribution)</li>
+<li>conduct bitwise OR on all bit vector, with the index of the lowest 0-bit to be $y$</li>
+<li>Estimate count by $2^{y-1}/0.7735$.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Aggregates related to Count</strong></p>
+<ul>
+<li>Distinct Count<ul>
+<li>generate random number with sensor reading as seed</li>
+</ul>
+</li>
+<li>Sum:<ul>
+<li>with reading $v_i$, create $v_i$ sketches and merge them</li>
+<li>Existing optimizations (including Li F’s ICDE)</li>
+</ul>
+</li>
+<li>Mean:<ul>
+<li>Sum / Count</li>
+</ul>
+</li>
+<li>Count-Min<ul>
+<li>be reduced to Count</li>
+<li>can use to answer $k$-th statistical moments, median, quantiles, inner product queries, etc.</li>
+</ul>
+</li>
+</ul>
+<p><strong>High overhead of naive reduction</strong></p>
+<p>Denote by $N$ the total # sensors.</p>
+<ul>
+<li><p>When generating RS, the portal needs to compute $s_i^-$ and roll it for $v_m$ times for each $i \in N$, and fold them together. That is, $N\cdot v_m$ roll operations, and $N$ fold operations.</p>
+</li>
+<li><p>To have reasonable estimation erroe, takle $J$ instances of AMS which usually needs to be large (e.g. a few hundreds).</p>
+</li>
+</ul>
+<p>RSA is costly, but its homomorphic enables aggresive optimization. Introduce optimization next.</p>
+<h2 id="Reducing-Rolling-Cost-via-Folded-Rolling"><a href="#Reducing-Rolling-Cost-via-Folded-Rolling" class="headerlink" title="Reducing Rolling Cost via Folded Rolling"></a>Reducing Rolling Cost via Folded Rolling</h2><p>A key source of overhead: roll a large number of SEALs individually, and fold resulted SEALs together. </p>
+<ul>
+<li><p>Folded rolling:</p>
+<ul>
+<li><p>idea: aggresively fold SEALs whenever possible, then roll the fold SEAL instead of individual SEALs.</p>
+</li>
+<li><p>To maximize benefits, roll the SEALs in the order of initial position (i.e. value). Thus total # rolling = $v_{\max}-v_{\min}$.</p>
+<p><img src="https://s2.loli.net/2022/01/05/4R7bXtEDiMSJlaz.png" alt="image.png"></p>
+</li>
+<li><p>folded rolling relies on the homomorphic property of RSA, thus not applicable to MD5 or SHA-1, i.e. hash.</p>
+</li>
+</ul>
+<h2 id="Reduce-Folding-Costs-via-B-Tree"><a href="#Reduce-Folding-Costs-via-B-Tree" class="headerlink" title="Reduce Folding Costs via B-Tree"></a>Reduce Folding Costs via B-Tree</h2></li>
+</ul>
+<h1 id="Top-k-Reading-and-Related-Queries"><a href="#Top-k-Reading-and-Related-Queries" class="headerlink" title="Top-k Reading and Related Queries"></a>Top-k Reading and Related Queries</h1><p>  Without loss of generality, assume sensor readings are all distinct (e.g. by appending sensor id)</p>
+<h2 id="Protocol-Intuition"><a href="#Protocol-Intuition" class="headerlink" title="Protocol Intuition"></a>Protocol Intuition</h2><p>  Trivially answer a Top-k query by invoking Max query k times, each time exclude the max sensor $s_{i_1}$ last time (root aggregator needs to broadcast the final sensor to all aggregators) to get the second max sensor $s_{i_2}$. More precisely, the VS submitted to the portal in second round would be $(v_{i_2},s_{i_2}^+, \odot_{i\ne i_1}F^{v_{i_2}}(s_i^-))$.</p>
+<p>  However, invoke Max sequentially may incur delay.</p>
+<h2 id="Protocol-Description"><a href="#Protocol-Description" class="headerlink" title="Protocol Description"></a>Protocol Description</h2>
       
     </div>
 
@@ -1057,7 +1175,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Motivation"><span class="nav-number">1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Related-Work"><span class="nav-number">2.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preliminaries"><span class="nav-number">3.</span> <span class="nav-text">Preliminaries</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Secure-Max-aggregate"><span class="nav-number">4.</span> <span class="nav-text">Secure Max aggregate</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Motivation"><span class="nav-number">1.</span> <span class="nav-text">Motivation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Related-Work"><span class="nav-number">2.</span> <span class="nav-text">Related Work</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preliminaries"><span class="nav-number">3.</span> <span class="nav-text">Preliminaries</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Secure-Max-Aggregate"><span class="nav-number">4.</span> <span class="nav-text">Secure Max Aggregate</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Count-and-Related-Queries"><span class="nav-number">5.</span> <span class="nav-text">Count and Related Queries</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Basic-Protocols"><span class="nav-number">5.1.</span> <span class="nav-text">Basic Protocols</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reducing-Rolling-Cost-via-Folded-Rolling"><span class="nav-number">5.2.</span> <span class="nav-text">Reducing Rolling Cost via Folded Rolling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reduce-Folding-Costs-via-B-Tree"><span class="nav-number">5.3.</span> <span class="nav-text">Reduce Folding Costs via B-Tree</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Top-k-Reading-and-Related-Queries"><span class="nav-number">6.</span> <span class="nav-text">Top-k Reading and Related Queries</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Protocol-Intuition"><span class="nav-number">6.1.</span> <span class="nav-text">Protocol Intuition</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Protocol-Description"><span class="nav-number">6.2.</span> <span class="nav-text">Protocol Description</span></a></li></ol></li></ol></div>
             
 
           </div>

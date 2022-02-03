@@ -6,7 +6,7 @@
   <link href="https://www.virgilsun.com/atom.xml" rel="self"/>
   
   <link href="https://www.virgilsun.com/"/>
-  <updated>2022-01-05T13:24:37.666Z</updated>
+  <updated>2022-02-03T15:45:54.265Z</updated>
   <id>https://www.virgilsun.com/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Notes on Merkle Tree from DSC 7th Ch23.6.6</title>
+    <link href="https://www.virgilsun.com/Notes%20on%20Merkle%20Tree%20from%20DSC%207th%20Ch23.6.6/"/>
+    <id>https://www.virgilsun.com/Notes%20on%20Merkle%20Tree%20from%20DSC%207th%20Ch23.6.6/</id>
+    <published>2022-02-02T16:00:00.000Z</published>
+    <updated>2022-02-03T15:45:54.265Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Merkle-tree-hash-tree"><a href="#Merkle-tree-hash-tree" class="headerlink" title="Merkle tree (hash tree)"></a>Merkle tree (hash tree)</h1><ul><li>Motivations<ul><li>effcient detection of inconsistent data stored at different replicas</li><li>sanity checks of replicas that are synchronously updated</li></ul></li><li>Data item structure<ul><li>each data item has a key and a value</li><li>if no explicit key: data item value can be used as a key</li></ul></li><li>Hash functions<ul><li>$h_1()$: hash each data item key $k_i$ to get a hash value with $n$ bits, where $2^n$ is within a small factor of the number of data items</li><li>$h_2()$: hash each data item value $v_i$ to get a hash value, typically longer than $n$ bits.</li><li>$h_3()$: inputs: a collection of hash values. outputs: a hash value (doesn’t depend on the input order, which can be done by sorting the collection before computing the hash)</li></ul></li><li>Merkle tree<ul><li>each node: associates with it an identifier, and stores a hash value<ul><li>identifier is $j$ bits long at depth $j$.</li></ul></li><li>each leaf<ul><li>identifier by an $n$-bit (at depth $n$) binary number.</li><li>hash collision: <ul><li>for a given leaf identified by number $k$, consider the set where $h_1(k_i)=k$.</li><li>then the hash value $v_k$ stored at leaf $k$ is computed by applying $h_2()$ on each $v_i$,</li><li>and then applying $h_3()$ on resultant collection of hash values.</li></ul></li></ul></li><li>The system also maintains an index that can retrieve all the data item with a given hash value computed by function $h_2()$.<ul><li>So MHT only stores hash value computed by $h_2()$ in leaves, hash=&gt;value mapping is maintained by other index in the system.</li></ul></li></ul></li><li>Example<ul><li><img src="https://s2.loli.net/2022/01/28/ISgsGlEurd839RD.png" alt="image.png"></li></ul></li><li>find difference between two replicas<ul><li>traverse down the node with different hash</li><li>cost: $O(m\log_2N)$, where $m$ is # different data items, $N$ is total number of data items (# leaf nodes is selected to be close to # data items).</li><li>Wider tree can reduce path length which would be $\log_KN$ if with $K$ children.</li></ul></li></ul>]]></content>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Merkle-tree-hash-tree&quot;&gt;&lt;a href=&quot;#Merkle-tree-hash-tree&quot; class=&quot;headerlink&quot; title=&quot;Merkle tree (hash tree)&quot;&gt;&lt;/a&gt;Merkle tree (hash</summary>
+        
+      
+    
+    
+    
+    <category term="Database" scheme="https://www.virgilsun.com/categories/Database/"/>
+    
+    
+    <category term="Merkle Tree" scheme="https://www.virgilsun.com/tags/Merkle-Tree/"/>
+    
+  </entry>
   
   <entry>
     <title>Notes on Secure Outsourced Aggregation via One-way Chains</title>
@@ -276,37 +303,6 @@
     <category term="Blockchain" scheme="https://www.virgilsun.com/tags/Blockchain/"/>
     
     <category term="Paper" scheme="https://www.virgilsun.com/tags/Paper/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Data Storage in BTC</title>
-    <link href="https://www.virgilsun.com/Data%20Storage%20in%20BTC/"/>
-    <id>https://www.virgilsun.com/Data%20Storage%20in%20BTC/</id>
-    <published>2021-09-10T16:00:00.000Z</published>
-    <updated>2021-12-03T16:21:53.913Z</updated>
-    
-    <content type="html"><![CDATA[<p>[TOC]</p><h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><ul><li>[Block and Txn]<ul><li>Block index and chainstate: <strong>leveldb</strong></li><li>Raw block and undo: <strong>raw storage</strong></li></ul></li><li>[Wallet]<ul><li>wallet: <strong>berkeley db</strong></li><li>descriptor wallet: <strong>sqlite</strong></li></ul></li></ul><h1 id="Block-and-Txn"><a href="#Block-and-Txn" class="headerlink" title="Block and Txn"></a>Block and Txn</h1><p><a href="https://en.bitcoin.it/wiki/Bitcoin_Core_0.11_(ch_2):_Data_Storage" title="storage">Bitcoin Core 0.11 (ch 2): Data Storage</a></p><ul><li><p>leveldb:</p><ul><li>Reason for <a href="https://bitcoin-development.narkive.com/XAPoxKZU/patch-switching-bitcoin-core-to-sqlite-db" title="leveldb in btc">leveldb</a>, just for <a href="https://bitcoindev.network/understanding-the-data/" title="persistence">persistence</a>?</li><li>blocks/index/*</li><li>chainstate/*</li></ul></li><li><p>raw data</p><ul><li><p>blocks/blk*.dat: raw block data, write to disk as soon as received.</p></li><li><p>blocks/rev*.dat: raw undo file, in case need to change to another branch.</p></li></ul></li></ul><h2 id="UTXO-set-Chainstate-leveldb"><a href="#UTXO-set-Chainstate-leveldb" class="headerlink" title="UTXO set (Chainstate leveldb)"></a>UTXO set (Chainstate leveldb)</h2><ul><li><p>Ultraprune、</p><ul><li>unredeemed transaction =&gt; unspent output</li></ul></li><li><p>Data structure</p><ul><li><p><code>CCoins</code>: coin (an output from a transaction) of a single transaction</p></li><li><p><code>CCoinsView</code>: state of the coins database</p><ul><li><p>class diagram (data types)</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CCoinsView (abstract class)</span><br><span class="line">       /            \</span><br><span class="line">   ViewDB          ViewBacked </span><br><span class="line">(database)          /      \</span><br><span class="line">             ViewMempool   ViewCache</span><br></pre></td></tr></table></figure><ul><li>View: base class, declare methods to verify coin existence (HaveCoins) &amp; retrive coins (GetCoins), etc.</li><li>ViewDB: interact with LevelDB.</li><li>ViewBacked: has a pointer (thus backed by) to another view</li><li>ViewCache: has a cache (a map of CCoins).</li><li>ViewMempool: associates a mempool with a view</li></ul></li><li><p>object diagram</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">       Database       </span><br><span class="line">      /       \</span><br><span class="line">  MemPool     Blockchain cache (pcoinsTip) </span><br><span class="line">View/Cache            \</span><br><span class="line">                    Validation cache</span><br></pre></td></tr></table></figure><p>| object                       | type        | backed by    | description                                                  |<br>| —————————————— | —————- | —————— | —————————————————————————————— |<br>| DB View                      | ViewDB      | n/a          | chainstate LevelDB, retrive and flush to LevelDB             |<br>| pCoinsTip (blockchain cache) | ViewCache   | DB View      | active chain’s tip, retrive and flush to database view       |<br>| Validation cache             | ViewCache   | pCoinsTip    | cache for UTXO in a new block, if valid, flush to pCoinsTip, else discard. |<br>| Mempool view                 | ViewMemPool | pCoinsTip    | purpose: enable validation of chains of transactions, a.k.a. “zero-comfirmation” transactions.<br />Thus, when queried, it can check if a given input is in mempool (i.e., “zero-conf”) or utxo set (“confirmed”) |<br>| Mempool cache                | ViewCache   | Mempool view |                                                              |</p></li></ul></li></ul></li><li><p>FetchCoins use cache vs. database</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1   CCoinsMap::iterator it = cacheCoins.find(txid);</span><br><span class="line">2   if (it != cacheCoins.end())</span><br><span class="line">3     return it;</span><br><span class="line">4   CCoins tmp;</span><br><span class="line">5   if (!base-&gt;GetCoins(txid, tmp))</span><br><span class="line">6     return cacheCoins.end();</span><br><span class="line">7   CCoinsMap::iterator ret = cacheCoins.insert(std::make_pair(txid, CCoinsCacheEntry())).first;</span><br></pre></td></tr></table></figure><ul><li>First, the code searches the cache for the coins for a given transaction id. (line 1)</li><li>If found, it returns the “fetched” coins. (lines 2-3) </li><li>If not, it searches the database. (line 5) </li><li>If found in the database, it updates the cache. (line 7) </li></ul></li><li><p>Flushing</p><ul><li>Flushing the validation cache to the blockchain cache</li><li>Flushing the blockchain cache to the database</li></ul></li></ul><h2 id="Raw-undo-data"><a href="#Raw-undo-data" class="headerlink" title="Raw undo data"></a>Raw undo data</h2><p>undo data: coins that were spent by the block in question</p><h1 id="Wallet"><a href="#Wallet" class="headerlink" title="Wallet"></a>Wallet</h1><p>Refer to a general introduction <a href="https://developer.bitcoin.org/devguide/wallets.html" title="wallet">here</a></p><ul><li><p>Wallet vs. Full node</p><ul><li>wallet stores private keys, sent/received transactions?</li><li>bitcoind wallet vs. mobile wallet: rely on RPC to third party node, wallet just provide private keys to sign.</li></ul></li><li><p>Fancy queries, authenticated queries?</p></li></ul><h2 id="Wallet-Program"><a href="#Wallet-Program" class="headerlink" title="Wallet Program"></a>Wallet Program</h2><ul><li>Components<ul><li>a public key distribution program (receive satoshis)</li><li>a signing program (spend satoshis)</li><li>a networked program (get from / broadcast to the network, maintaining balance(utxo))</li></ul></li></ul><h3 id="Full-Service-Wallets"><a href="#Full-Service-Wallets" class="headerlink" title="Full-Service Wallets"></a>Full-Service Wallets</h3><p>It performs all three functions.</p><p><img src="https://developer.bitcoin.org/_images/en-wallets-full-service.svg" alt="full_service_wallet"></p><ul><li>pros<ul><li>full-service, easy to use</li></ul></li><li>cons<ul><li>store pri-key on a device conencted to internet</li></ul></li></ul><h1 id="Ethereum-query"><a href="#Ethereum-query" class="headerlink" title="Ethereum query"></a>Ethereum query</h1><p>For examples, refer to this <a href="https://blog.ethereum.org/2015/11/15/merkling-in-ethereum/" title="eth query">introduction</a>.</p><p>A block contains 3 MPTs (state, receipts, tx), can handle according queries by returning merkle branches. [authenticated]</p><h1 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h1>]]></content>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;[TOC]&lt;/p&gt;
-&lt;h1 id=&quot;Overview&quot;&gt;&lt;a href=&quot;#Overview&quot; class=&quot;headerlink&quot; title=&quot;Overview&quot;&gt;&lt;/a&gt;Overview&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;[Block and</summary>
-        
-      
-    
-    
-    
-    <category term="Blockchain" scheme="https://www.virgilsun.com/categories/Blockchain/"/>
-    
-    
-    <category term="Blockchain" scheme="https://www.virgilsun.com/tags/Blockchain/"/>
-    
-    <category term="Database" scheme="https://www.virgilsun.com/tags/Database/"/>
     
   </entry>
   

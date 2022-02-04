@@ -6,7 +6,7 @@
   <link href="https://www.virgilsun.com/atom.xml" rel="self"/>
   
   <link href="https://www.virgilsun.com/"/>
-  <updated>2022-02-03T15:45:54.265Z</updated>
+  <updated>2022-02-04T15:01:58.777Z</updated>
   <id>https://www.virgilsun.com/</id>
   
   <author>
@@ -15,6 +15,38 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Notes on Dynamic Authenticated Index Structures for Outsourced Databases (SIGMOD&#39;06)</title>
+    <link href="https://www.virgilsun.com/Notes%20on%20Dynamic%20Authenticated%20Index%20Structures%20for%20Outsourced%20Databases%20(SIGMOD06)/"/>
+    <id>https://www.virgilsun.com/Notes%20on%20Dynamic%20Authenticated%20Index%20Structures%20for%20Outsourced%20Databases%20(SIGMOD06)/</id>
+    <published>2022-02-03T16:00:00.000Z</published>
+    <updated>2022-02-04T15:01:58.777Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><ul><li><p>3 entities in ODB scenario</p><ul><li>data owner, server, client.</li><li>data owner create the database along with the associated index and ADS and uploads to server. </li></ul></li><li><p>3 dimensions for query authentication:</p><ul><li>correctness, completeness, freshness (due to potential update)</li></ul></li><li>6 metrics<ul><li>owner’s computation overhead</li><li>owner-server communication cost</li><li>server’s storage cost</li><li>server’s computation cost</li><li>client-server communication cost</li><li>client computation cost</li></ul></li><li><p>drawbacks of existing works</p><ul><li>only consider static scenarios, i.e. owners never issue data updates</li><li>only consider subset of the 6 metrics above, thus optimized for particular case, not general.</li><li>performance analyzing is theoretical, doesn’t consider pratical cost of cryptographic primitives?</li><li>doesn’t conduct empirical evaluation on a working prototype of existing techniques</li></ul></li><li><p>contribution…</p></li><li><p>other security issues in ODB yet orthogonal…</p></li></ul><h1 id="Preliminaries"><a href="#Preliminaries" class="headerlink" title="Preliminaries"></a>Preliminaries</h1><h2 id="Cryptography-essentials"><a href="#Cryptography-essentials" class="headerlink" title="Cryptography essentials"></a>Cryptography essentials</h2><p>TODO</p>]]></content>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Introduction&quot;&gt;&lt;a href=&quot;#Introduction&quot; class=&quot;headerlink&quot; title=&quot;Introduction&quot;&gt;&lt;/a&gt;Introduction&lt;/h1&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;3 entities in ODB</summary>
+        
+      
+    
+    
+    
+    <category term="Database" scheme="https://www.virgilsun.com/categories/Database/"/>
+    
+    
+    <category term="Merkle Tree" scheme="https://www.virgilsun.com/tags/Merkle-Tree/"/>
+    
+    <category term="Authenticated Structure" scheme="https://www.virgilsun.com/tags/Authenticated-Structure/"/>
+    
+    <category term="Outsourced Databse" scheme="https://www.virgilsun.com/tags/Outsourced-Databse/"/>
+    
+  </entry>
   
   <entry>
     <title>Notes on Merkle Tree from DSC 7th Ch23.6.6</title>
@@ -273,36 +305,6 @@
     <category term="Lightning Network" scheme="https://www.virgilsun.com/tags/Lightning-Network/"/>
     
     <category term="Rebalance" scheme="https://www.virgilsun.com/tags/Rebalance/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Modeling the Impact of Network Connectivity on Consensus Security of Proof-of-Work Blockchain</title>
-    <link href="https://www.virgilsun.com/Modeling%20the%20Impact%20of%20Network%20Connectivity%20on%20Consensus%20Security%20of%20Proof%20of%20Work%20Blockchain/"/>
-    <id>https://www.virgilsun.com/Modeling%20the%20Impact%20of%20Network%20Connectivity%20on%20Consensus%20Security%20of%20Proof%20of%20Work%20Blockchain/</id>
-    <published>2021-10-27T16:00:00.000Z</published>
-    <updated>2021-11-30T02:29:16.265Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="Motivation"><a href="#Motivation" class="headerlink" title="Motivation"></a>Motivation</h1><ul><li>Honest-majority security premise comes under two implicit assumptions<ul><li>all nodes have the same communication capability</li><li>all nodes wins in a fork with equal chance</li></ul></li><li><p>Two threat models:</p><ul><li>Honest-but-potentially -colluding:<ul><li>Attackers with propagation advantage can succeed with less than 50% power.</li><li>Qualitative analysis.</li></ul></li><li>Selfish Mining:<ul><li>Strategies like SM utilize the network connectivity.</li><li>Treated as a  preexisting parameter.aaaaaa</li></ul></li></ul></li><li><p>Motivation: quantitative analysis is missed.</p></li></ul><h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><ul><li>fork: Even all honest miners, there can be a fork due to propagation delay</li><li>longest-chain rule to resolve fork: “assume equal chance”, 50% mines on B1, 50% mines on B2</li><li>well connected nodes exploit intrinsic forks and even cause forks deliberately</li></ul><h1 id="System-Model"><a href="#System-Model" class="headerlink" title="System Model"></a>System Model</h1><h2 id="Network-Model"><a href="#Network-Model" class="headerlink" title="Network Model"></a>Network Model</h2><ul><li>A peer-to-peer network of $N$ nodes: undirected graph $G=(V,E)$</li><li>Adjacency matrix $A$. $A_{i,j}=1$ indicating a connection, thus node $i,j$ can communicate in one hop.</li><li>Mining rate: Poisson process of rate $\pi_i$ per time unit $\delta$.</li></ul><h2 id="Fork"><a href="#Fork" class="headerlink" title="Fork"></a>Fork</h2><p><img src="https://i.loli.net/2021/10/19/Cy9E1GcwaFKfiTL.png" alt="image.png"></p><h2 id="Adversary-Model"><a href="#Adversary-Model" class="headerlink" title="Adversary Model"></a>Adversary Model</h2><ul><li>Honest-but-Potentially-Colluding<ul><li>Metrics: 50% attack threshold (AT50%)</li></ul></li><li>Selfish-Mining: colluding consortium, expand and acquire their power &amp; links.<ul><li>Metrics: AT50%, profitable threshold (PRTH).</li></ul></li></ul><p>idea of collude, expand</p><h1 id="Analysis-on-Honest-Mining"><a href="#Analysis-on-Honest-Mining" class="headerlink" title="Analysis on Honest Mining"></a>Analysis on Honest Mining</h1><h2 id="Fork-rate"><a href="#Fork-rate" class="headerlink" title="Fork rate"></a>Fork rate</h2><ul><li>$M_i$: denotes the event that node $i$ is the first to generate the next block with $P(M_i)=\frac{\pi_i}{\pi}$.</li><li>$U_i(t)$: denotes the set of nodes unaware of node $i$’s block at time $t$.</li><li>$|U_i(t)|_{\pi}$ is the combined block generation rate of $U_i(t)$<ul><li>where $|U_i(0)|_\pi=\pi-\pi_i$</li><li>and $|U_i(t)|_{\pi}=0$ when $t$ exceeds the minimum time needed for $i$’s block to reach all nodes.</li></ul></li><li>$P_{NC,i}(t)$ denotes the probability that the rest network doesn’t generate a competing block by time $t$.<ul><li>$P_{NC,i}(t)=\prod_{s=\delta}^t(1-|U_i(s)|_\pi)$</li></ul></li></ul><h2 id="Mining-Revenue-and-Relative-Mining-Gain"><a href="#Mining-Revenue-and-Relative-Mining-Gain" class="headerlink" title="Mining Revenue and Relative Mining Gain"></a>Mining Revenue and Relative Mining Gain</h2><ul><li><p>Definition of process $\{B_i(h)\}$</p><ul><li>$B_i(h)$ indicates whether node $i$ is the block generator at height $h$</li><li>Mining revenue ($MR_i$): $MR_i=\lim_{H\rightarrow\infty}\frac{1}{H}\sum_{h=1}^HB_i(h)$</li><li>Relative mining gain ($RMG_i$): $RMG_i=\frac{MR_i-\pi_i/\pi}{\pi_i / \pi}$</li></ul></li><li><p>Definition of process $\{W_i(c)\}$:</p><ul><li>$h(c)$: the block height of the $c$-th canonization event.</li><li>$W_i(c)=1$ if $B_i(h(c)+1)=1$.</li></ul></li><li><p>Proposition: $E[W_i]$ at any epoch $c$ can be used to measure $MR_i$ in a conservative manner.</p><ul><li><script type="math/tex; mode=display">E[W_i]=\begin{cases}\leq MR_i & \text{if } E[W_i] \geq \frac{\pi_i}{\pi} \\> MR_i & \text{otherwise}\end{cases}</script></li><li><p>Proof sketch</p><ul><li>any epoch $c$: block generation memoryless, i.i.d. for epochs.</li><li>conservative:<ul><li>if $E[W_i]\geq\frac{\pi_i}{\pi}$, node $i$ has communication advantage to win a fork race.</li><li>if $E[W_i]\geq\frac{\pi_i}{\pi}$, and node $i$ wins block $h(c)+1$, it will continue with an enhanced communication advantage from $h(c)+2$ to $h(c+1)$.</li></ul></li></ul></li></ul></li><li><p>Compute $E[W_i]$ by the law of total expectation</p><ul><li><script type="math/tex; mode=display">E[W_i] = P(M_i)E[W_i|M_i] + \sum_{j\ne i} P(M_j)E[W_i|M_j]</script></li><li><p>Conditional event 1: $W_i|M_i$</p><ul><li><p>no-fork win: node $i$ wins without competing blocks.</p></li><li><p>fork win: rest of the network generate a competing block, whereas node $i$ still wins.</p></li><li><script type="math/tex; mode=display">\begin{align}E[W_i|M_i] &= E[W_i, no-fork|M_i] + E[W_i, fork|M_i] \\&= \lim_{t\rightarrow\infty}P_{NC,i}(t) + \sum_{t=\delta}^\infty P_{NC,i}(t)\sum_{j\in U_i(t)}\pi_j\omega_{i\succ j}(t)\end{align}</script><p>where $\omega_{i\succ j}(t)$ denote when node $j$ generate a competing block at time $t$, the probability that node $i$ wins the fork.</p></li></ul></li><li><p>Conditional event 2: $W_i|M_j$</p><ul><li><script type="math/tex; mode=display">\begin{align}E[W_i|M_j] &= E[W_i, fork|M_j] \\&= \sum_{t=\delta}^\infty P_{NC,j}(t) \pi_i \mathbb{1}_{\{i\in U_j(t)\}}(1-\omega_{j\succ i}(t))\end{align}</script></li></ul></li><li><p>Evaluating $\omega_{i\succ j}(t)$:</p><ul><li><p>$\omega_{i\succ j}(t)$ measures the communication advantage of node $i$ over $j$ when $j$ generates a competing block at time $t$.</p></li><li><p>Define $\tau_{ik}(t)$: the minimal time for $i$’s block propagate to $k$, starting from time $t$.</p></li><li><script type="math/tex; mode=display">\omega_{i \succ j}(t)=\sum_{k} \frac{\pi_k}{\pi}(\mathbb{1}_{\{\tau_ik(t)<\tau_{jk}(0)\}} + \frac{1}{2}\mathbb{1}_{\{\tau_ik(t)=\tau_{jk}(0)\}})</script></li></ul></li></ul></li></ul><h2 id="Security-Analysis"><a href="#Security-Analysis" class="headerlink" title="Security Analysis"></a>Security Analysis</h2><ul><li>lower overall connectivity leads to higher fork rate &amp; lower AT50.<ul><li>higher fork rate: $P_{NC,i}(t)=\prod_{s=\delta}^t(1-|U_i(s)|_\pi)$</li><li>lower AT50: a lower $\lim_{t\rightarrow\infty}P_{NC,i}(t)$ means more revenue is contributed by fork race, which is closely related to communication capability.</li></ul></li><li>high heterogeneous of network connectivity leads to low AT50<ul><li>consider 2 nodes $i$ with high connectivity, $j$ with low connectivity so when there is a fork race, $i$ always harvest, $j$ hardly wins.</li><li>Hence, $E[W_i]&gt;\frac{\pi_i}{\pi}$ while $E[W_j]&lt;\frac{\pi_j}{\pi}$</li></ul></li></ul><h1 id="gamma-amp-SM-Analysis"><a href="#gamma-amp-SM-Analysis" class="headerlink" title="$\gamma$ &amp; SM Analysis"></a>$\gamma$ &amp; SM Analysis</h1><h2 id="SM"><a href="#SM" class="headerlink" title="SM"></a>SM</h2><p><img src="https://i.loli.net/2021/10/29/YAhVnicwmgJSDBG.png" alt="image.png"></p><h2 id="Evaluate-gamma-SM-Using-Betweenness-Centrality"><a href="#Evaluate-gamma-SM-Using-Betweenness-Centrality" class="headerlink" title="Evaluate $\gamma_{SM}$ Using Betweenness Centrality"></a>Evaluate $\gamma_{SM}$ Using Betweenness Centrality</h2><ul><li><p>SM POOL: no internal delay, fully connectedly, incorporate members’ power and outside links.</p></li><li><p>$\gamma$: the fraction of honest miners that choose to mine on SM’s block when there is a fork race.</p></li><li><p>$\sigma(i,j)$: number of shortest paths between $i$ and $j$</p></li><li><p>$\sigma(i,j|SMPOOL)$ number of such paths that pass through SM POOL.</p></li><li><script type="math/tex; mode=display">\gamma_{SM}=\sum_{i\neq SMPOOL}\frac{\pi_i}{\pi-\pi_{SM}}\sum_{j\ne i\ne SMPOOL}\frac{\pi_i}{\pi-\pi_{SM}-\pi_i}\frac{\sigma(i,j|SMPOOL)}{\sigma(i,j)}</script></li></ul><h2 id="Security-Analysis-1"><a href="#Security-Analysis-1" class="headerlink" title="Security Analysis"></a>Security Analysis</h2><ul><li>lower overall connectivity leads to higher $\gamma_{SM}$, lower AT50 and PRTH<ul><li>SM POOL is an influential pool well connected to honest nodes, even delay gets larger it still resides in the shortest path.</li></ul></li><li>Heterogeneous topology may utilized by SM to incorporate influential nodes.</li></ul><h1 id="Evaluation"><a href="#Evaluation" class="headerlink" title="Evaluation"></a>Evaluation</h1><h2 id="Setting"><a href="#Setting" class="headerlink" title="Setting"></a>Setting</h2><p><img src="https://i.loli.net/2021/10/29/5RW6ONcBlPQ9gKC.png" alt="image.png"></p><h2 id="Honest"><a href="#Honest" class="headerlink" title="Honest"></a>Honest</h2><ul><li>$E[W_i]$ is a conservative estimator.</li></ul><p><img src="https://i.loli.net/2021/10/29/p1ytaHZzfnXLklj.png" alt="image.png"></p><ul><li>HIgher $D$ (higher connectivity) and lower $\pi$ (longer block interval) leads to lower fork rate and higher AT50.</li></ul><p><img src="https://i.loli.net/2021/10/29/5lFOjxJcCNeSqDt.png" alt="image.png"></p><h2 id="SM-1"><a href="#SM-1" class="headerlink" title="SM"></a>SM</h2><ul><li>$G_R(100,4)$ doesn’t reach 1. Depends on network model.</li><li>Why still fit? Because $\pi_i = \frac{\pi}{N}$ is ignorable.</li></ul><p><img src="https://i.loli.net/2021/10/29/KpklQeIrXsaOZV8.png" alt="image.png"></p><h1 id="Insights"><a href="#Insights" class="headerlink" title="Insights"></a>Insights</h1><ul><li><p>model honest revenue with fork rate.</p></li><li><p>computation of $\gamma$ using betweenness centrality to model a combinatorial problem.</p></li></ul>]]></content>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;h1 id=&quot;Motivation&quot;&gt;&lt;a href=&quot;#Motivation&quot; class=&quot;headerlink&quot; title=&quot;Motivation&quot;&gt;&lt;/a&gt;Motivation&lt;/h1&gt;&lt;ul&gt;
-&lt;li&gt;Honest-majority security</summary>
-        
-      
-    
-    
-    
-    <category term="Blockchain" scheme="https://www.virgilsun.com/categories/Blockchain/"/>
-    
-    
-    <category term="Blockchain" scheme="https://www.virgilsun.com/tags/Blockchain/"/>
-    
-    <category term="Paper" scheme="https://www.virgilsun.com/tags/Paper/"/>
     
   </entry>
   

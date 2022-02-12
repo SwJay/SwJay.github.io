@@ -143,7 +143,7 @@
 <meta property="og:description" content="Introduction 3 entities in ODB scenario  data owner, server, client. data owner create the database along with the associated index and ADS and uploads to server.    3 dimensions for query authenticat">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-02-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-06T15:14:24.873Z">
+<meta property="article:modified_time" content="2022-02-12T08:33:06.411Z">
 <meta property="article:author" content="Virgil Sun">
 <meta property="article:tag" content="Merkle Tree">
 <meta property="article:tag" content="Authenticated Structure">
@@ -506,7 +506,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2022-02-06 23:14:24" itemprop="dateModified" datetime="2022-02-06T23:14:24+08:00">2022-02-06</time>
+                <time title="Modified: 2022-02-12 16:33:06" itemprop="dateModified" datetime="2022-02-12T16:33:06+08:00">2022-02-12</time>
               
             
           </span>
@@ -651,16 +651,18 @@
 </ul>
 </li>
 </ul>
-<p>The analysis considers range queries on a speciﬁc database attribute A indexed by a B +-tree.</p>
+<p><strong>The analysis considers range queries on a speciﬁc database attribute A indexed by a B +-tree, i.e. primary index</strong>.</p>
 <h2 id="Aggregated-Signatures-with-B-trees"><a href="#Aggregated-Signatures-with-B-trees" class="headerlink" title="Aggregated Signatures with B+-trees"></a>Aggregated Signatures with B+-trees</h2><p>Direct extension of aggregated signatures and ideas that appeared in [23, 26][23, 26].</p>
 <ul>
-<li>techniques<ul>
-<li>owner individually hashes and signs all consecutive pairs of tuples in the db, assuming some sorted order on a given attribut $A$.</li>
+<li>Owner side<ul>
+<li>owner individually hashes and signs all consecutive pairs of tuples in the db, assuming some sorted order on a given attribut $A$.<ul>
 <li>consecutive pair: $s_i=S(r_i|r_j)$. where $r_i, r_j$ are two consecutive tuples. Chaining tuples in this way enables clients to verify that no in-between tuples have been dropped or modified.</li>
+</ul>
+</li>
 <li>First and last tuples can be paired with special marker records.</li>
 </ul>
 </li>
-<li>To speed up, server construct a B+-tree on top of attribute <em>A</em>.<ul>
+<li>Server side: To speed up, server constructs a B+-tree on top of attribute <em>A</em>.<ul>
 <li>VO: $r_q|s_q$ per query result</li>
 <li>In addition, one tuple to the left of lower-bound and right of upper-bound is returned to guarantee that no boundary results have been dropped.</li>
 </ul>
@@ -673,7 +675,18 @@
 </li>
 </ul>
 <p><strong>cost</strong> TODO</p>
-<h2 id="The-Merkle-B-tree"><a href="#The-Merkle-B-tree" class="headerlink" title="The Merkle B-tree"></a>The Merkle B-tree</h2><h2 id="Embeded-Merkle-B-tree"><a href="#Embeded-Merkle-B-tree" class="headerlink" title="Embeded Merkle B-tree"></a>Embeded Merkle B-tree</h2><h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1>
+<h2 id="The-Merkle-B-tree"><a href="#The-Merkle-B-tree" class="headerlink" title="The Merkle B+-tree"></a>The Merkle B+-tree</h2><p>An MB-tree works like a B +-tree and also consists of ordinary B + -tree nodes that are extended with one hash value associated with every pointer entry.</p>
+<p>After computing all hash values, the <strong>owner</strong> has to sign the hash of the root using the private key.</p>
+<h2 id="Embeded-Merkle-B-tree"><a href="#Embeded-Merkle-B-tree" class="headerlink" title="Embeded Merkle B-tree"></a>Embeded Merkle B-tree</h2><ul>
+<li>Construction<ul>
+<li>Every EMB node consists of regular B+-tree entries, augmented with an embedded MB-tree,</li>
+<li>EMB tree has fanout $f_e$, EMB node’s embedded MB-tree has fanout $f_k$.</li>
+<li>Each EMB node stores up to $f_e$ nodes, which are exact the same data items at its embedded MB-tree’s leaf level.</li>
+<li>Essentially, we are collapsing an MB-tree with height $d_e\cdot d_k=\log_{f_k}N_D$ into a tree with height $d_e$ that stores smaller MB-tree of height $d_k$ within each node.</li>
+</ul>
+</li>
+</ul>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1>
       
     </div>
 
@@ -1072,7 +1085,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preliminaries"><span class="nav-number">2.</span> <span class="nav-text">Preliminaries</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cryptography-essentials"><span class="nav-number">2.1.</span> <span class="nav-text">Cryptography essentials</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Previous-work"><span class="nav-number">2.2.</span> <span class="nav-text">Previous work</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Static-Case"><span class="nav-number">3.</span> <span class="nav-text">The Static Case</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Aggregated-Signatures-with-B-trees"><span class="nav-number">3.1.</span> <span class="nav-text">Aggregated Signatures with B+-trees</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Merkle-B-tree"><span class="nav-number">3.2.</span> <span class="nav-text">The Merkle B-tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Embeded-Merkle-B-tree"><span class="nav-number">3.3.</span> <span class="nav-text">Embeded Merkle B-tree</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Preliminaries"><span class="nav-number">2.</span> <span class="nav-text">Preliminaries</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Cryptography-essentials"><span class="nav-number">2.1.</span> <span class="nav-text">Cryptography essentials</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Previous-work"><span class="nav-number">2.2.</span> <span class="nav-text">Previous work</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Static-Case"><span class="nav-number">3.</span> <span class="nav-text">The Static Case</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Aggregated-Signatures-with-B-trees"><span class="nav-number">3.1.</span> <span class="nav-text">Aggregated Signatures with B+-trees</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Merkle-B-tree"><span class="nav-number">3.2.</span> <span class="nav-text">The Merkle B+-tree</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Embeded-Merkle-B-tree"><span class="nav-number">3.3.</span> <span class="nav-text">Embeded Merkle B-tree</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">4.</span> <span class="nav-text">References</span></a></li></ol></div>
             
 
           </div>
